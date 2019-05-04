@@ -1,9 +1,14 @@
-html,body{
+html,
+body {
     background-color: #333;
     color: #fff;
-  }
-  body{
+}
+
+body {
     margin: 15px;
     font-family: serif;
-  }
-  
+}
+
+body h1 {
+    color: #000;
+}

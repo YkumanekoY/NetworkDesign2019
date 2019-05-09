@@ -25,7 +25,7 @@ $(document).ready(function() {
 
             //現在の天気データを呼び出し
             $.ajax({
-                url: "http://api.openweathermap.org/data/2.5/weather",
+                url: "https://api.openweathermap.org/data/2.5/weather",
                 dataType: "jsonp",
                 data: "lat=" + lat + "&lon=" + lon + "&appid=" + APIKEY,
                 //天気データ呼び出し成功時の挙動
@@ -46,13 +46,13 @@ $(document).ready(function() {
 
                     //各データの表示
                     $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);
-                    $('.dayWeatherIcon').attr('src', 'http://openweathermap.org/img/w/' + data.weather[0].icon + '.png ');
+                    $('.dayWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + data.weather[0].icon + '.png ');
                 }
             });
 
             //明日9時の天気データを呼び出し
             $.ajax({
-                url: "http://api.openweathermap.org/data/2.5/forecast",
+                url: "https://api.openweathermap.org/data/2.5/forecast",
                 dataType: "jsonp",
                 data: "lat=" + lat + "&lon=" + lon + "&appid=" + APIKEY,
                 //天気データ呼び出し成功時の挙動
@@ -84,9 +84,9 @@ $(document).ready(function() {
 
                     ///各データの表示
                     $('.tomorrowTemp').text(Math.floor((targetData1.main.temp - 273.15) * 10) / 10);
-                    $('.tomorrowWeatherIcon').attr('src', 'http://openweathermap.org/img/w/' + targetData1.weather[0].icon + '.png ');
+                    $('.tomorrowWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + targetData1.weather[0].icon + '.png ');
                     $('.dayAfterTomorrowTemp').text(Math.floor((targetData2.main.temp - 273.15) * 10) / 10);
-                    $('.dayAfterTomorrowWeatherIcon').attr('src', 'http://openweathermap.org/img/w/' + targetData2.weather[0].icon + '.png ');
+                    $('.dayAfterTomorrowWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + targetData2.weather[0].icon + '.png ');
                 }
             });
         }
@@ -112,7 +112,7 @@ $(document).ready(function() {
 
         //現在の天気データ呼び出し
         $.ajax({
-            url: "http://api.openweathermap.org/data/2.5/weather",
+            url: "https://api.openweathermap.org/data/2.5/weather",
             dataType: "jsonp",
             data: "q=Tokyo,jp&appid=" + APIKEY,
             //天気データ呼び出し成功時の挙動
@@ -133,13 +133,13 @@ $(document).ready(function() {
 
                 //各データの表示
                 $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);
-                $('.dayWeatherIcon').attr('src', 'http://openweathermap.org/img/w/' + data.weather[0].icon + '.png ');
+                $('.dayWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + data.weather[0].icon + '.png ');
             }
         });
 
         //翌日9時の天気データを呼び出し
         $.ajax({
-            url: "http://api.openweathermap.org/data/2.5/forecast",
+            url: "https://api.openweathermap.org/data/2.5/forecast",
             dataType: "jsonp",
             data: "q=Tokyo,jp&appid=" + APIKEY,
             //天気データ呼び出し成功時の挙動
@@ -171,9 +171,9 @@ $(document).ready(function() {
 
                 ///各データの表示
                 $('.tomorrowTemp').text(Math.floor((targetData1.main.temp - 273.15) * 10) / 10);
-                $('.tomorrowWeatherIcon').attr('src', 'http://openweathermap.org/img/w/' + targetData1.weather[0].icon + '.png ');
+                $('.tomorrowWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + targetData1.weather[0].icon + '.png ');
                 $('.dayAfterTomorrowTemp').text(Math.floor((targetData2.main.temp - 273.15) * 10) / 10);
-                $('.dayAfterTomorrowWeatherIcon').attr('src', 'http://openweathermap.org/img/w/' + targetData2.weather[0].icon + '.png ');
+                $('.dayAfterTomorrowWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + targetData2.weather[0].icon + '.png ');
             }
         });
     }

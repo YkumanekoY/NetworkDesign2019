@@ -1,14 +1,88 @@
 html,
-body {
-    background-color: #333;
-    color: #fff;
+body,
+h1,
+h2,
+h3,
+h4,
+ul,
+ol,
+dl,
+li,
+dt,
+dd,
+p,
+div,
+span,
+img,
+a,
+table,
+tr,
+th,
+td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-weight: normal;
+    font-size: 100%;
+    vertical-align: baseline;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-    margin: 15px;
-    font-family: serif;
+    font-family: 'Yu Gothic';
 }
 
-body h1 {
-    color: #000;
+header {
+    background-color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 10px;
+    height: 50px;
+    line-height: 50px;
+    padding-left: 10px;
+    font-size: 30px;
+}
+
+main img {
+    width: 100px;
+    height: 100px;
+}
+
+.weatherMain {
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.day,
+.tomorrow,
+.dayAfterTomorrow {
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 30px;
+    display: inline;
+}
+
+.day,
+.tomorrow,
+.dayAfterTomorrow div {
+    font-size: 24px;
+}
+
+footer {
+    background-color: rgba(255, 255, 255, 0.5);
+    margin-top: 10px;
+}
+
+@media screen and (max-width: 800px) {
+    header {
+        font-size: 20px;
+    }
+    .weatherMain {
+        flex-direction: column;
+    }
+    .day,
+    .tomorrow,
+    .dayAfterTomorrow {
+        margin-bottom: 10px;
+    }
 }

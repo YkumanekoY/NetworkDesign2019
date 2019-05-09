@@ -44,6 +44,7 @@ $(document).ready(function() {
                         $('.dayWeather').text("雪");
                     }
                     $('.windSpeed').text(data.wind.speed);
+                    $('.windDeg').text(data.wind.deg);
 
                     //各データの表示
                     $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);

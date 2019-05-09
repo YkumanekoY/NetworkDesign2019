@@ -43,6 +43,7 @@ $(document).ready(function() {
                         $('body').css('background-image', 'url(Snowy.jpg)');
                         $('.dayWeather').text("雪");
                     }
+                    $('.windSpeed').text(data.wind.speed);
 
                     //各データの表示
                     $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);

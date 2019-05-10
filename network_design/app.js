@@ -46,7 +46,7 @@ $(document).ready(function() {
                     //風速
                     $('.windSpeed').text(data.wind.speed);
                     //風向きについての処理
-                    $('.windDeg').text(getAzimuth(data.wind.deg));
+                    $('.windDeg').text(data.wind.deg + "°(" + getAzimuth(data.wind.deg) + ")");
 
                     //各データの表示
                     $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);

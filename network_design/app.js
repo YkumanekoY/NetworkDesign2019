@@ -43,8 +43,10 @@ $(document).ready(function() {
                         $('body').css('background-image', 'url(Snowy.jpg)');
                         $('.dayWeather').text("雪");
                     }
+                    //風速
                     $('.windSpeed').text(data.wind.speed);
-                    $('.windDeg').text(data.wind.deg);
+                    //風向きについての処理
+                    $('.windDeg').text(getAzimuth(data.wind.deg));
 
                     //各データの表示
                     $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);
@@ -178,5 +180,22 @@ $(document).ready(function() {
                 $('.dayAfterTomorrowWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + targetData2.weather[0].icon + '.png ');
             }
         });
+    }
+
+    function getAzimuth(degree) {
+        var dname = [
+            "北", "北北東", "北東", "東北東",
+            "東", "東南東", "南東", "南南東",
+            "南", "南南西", "南西", "西南西",
+            "西", "西北西", "北西", "北北西", "北"
+        ];
+        var count = 0;
+        for (var i = 11.25; i < (360 + 11.25); i += 22.5) {
+            if (degree < i) {
+                break
+            }
+            count++;
+        }
+        return dname[count];
     }
 }());

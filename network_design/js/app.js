@@ -6,8 +6,8 @@ $(document).ready(function() {
     //翌日9時のデータの場所を割り出す
     const date = new Date();
     const nowHour = date.getHours();
-    const whichTomorrowWeatherData = Math.floor((24 - nowHour + 9) / 3);
-    const whichDayAfterTomorrowWeatherData = Math.floor((24 - nowHour + 33) / 3);
+    // const whichTomorrowWeatherData = Math.floor((24 - nowHour + 9) / 3);
+    // const whichDayAfterTomorrowWeatherData = Math.floor((24 - nowHour + 33) / 3);
 
     //現在位置の取得ができるかどうか
     if (navigator.geolocation) {
@@ -51,46 +51,6 @@ $(document).ready(function() {
                     //各データの表示
                     $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);
                     $('.dayWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + data.weather[0].icon + '.png ');
-                }
-            });
-
-            //明日9時の天気データを呼び出し
-            $.ajax({
-                url: "https://api.openweathermap.org/data/2.5/forecast",
-                dataType: "jsonp",
-                data: "lat=" + lat + "&lon=" + lon + "&appid=" + APIKEY,
-                //天気データ呼び出し成功時の挙動
-                success: function(data) {
-
-                    //翌日9時の天気データ
-                    const targetData1 = data.list[whichTomorrowWeatherData];
-                    const targetData2 = data.list[whichDayAfterTomorrowWeatherData];
-
-                    if (targetData1.weather[0].main === "Clear") {
-                        $('.tomorrowWeather').text("晴れ");
-                    } else if (targetData1.weather[0].main === "Rain") {
-                        $('.tomorrowWeather').text("雨");
-                    } else if (targetData1.weather[0].main === "Clouds") {
-                        $('.tomorrowWeather').text("くもり");
-                    } else if (targetData1.weather[0].main === "Snow") {
-                        $('.tomorrowWeather').text("雪");
-                    }
-
-                    if (targetData2.weather[0].main === "Clear") {
-                        $('.dayAfterTomorrowWeather').text("晴れ");
-                    } else if (targetData2.weather[0].main === "Rain") {
-                        $('.dayAfterTomorrowWeather').text("雨");
-                    } else if (targetData2.weather[0].main === "Clouds") {
-                        $('.dayAfterTomorrowWeather').text("くもり");
-                    } else if (targetData2.weather[0].main === "Snow") {
-                        $('.dayAfterTomorrowWeather').text("雪");
-                    }
-
-                    ///各データの表示
-                    $('.tomorrowTemp').text(Math.floor((targetData1.main.temp - 273.15) * 10) / 10);
-                    $('.tomorrowWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + targetData1.weather[0].icon + '.png ');
-                    $('.dayAfterTomorrowTemp').text(Math.floor((targetData2.main.temp - 273.15) * 10) / 10);
-                    $('.dayAfterTomorrowWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + targetData2.weather[0].icon + '.png ');
                 }
             });
         }
@@ -138,46 +98,6 @@ $(document).ready(function() {
                 //各データの表示
                 $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);
                 $('.dayWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + data.weather[0].icon + '.png ');
-            }
-        });
-
-        //翌日9時の天気データを呼び出し
-        $.ajax({
-            url: "https://api.openweathermap.org/data/2.5/forecast",
-            dataType: "jsonp",
-            data: "q=Tokyo,jp&appid=" + APIKEY,
-            //天気データ呼び出し成功時の挙動
-            success: function(data) {
-
-                //翌日9時の天気データ
-                const targetData1 = data.list[whichTomorrowWeatherData];
-                const targetData2 = data.list[whichDayAfterTomorrowWeatherData];
-
-                if (targetData1.weather[0].main === "Clear") {
-                    $('.tomorrowWeather').text("晴れ");
-                } else if (targetData1.weather[0].main === "Rain") {
-                    $('.tomorrowWeather').text("雨");
-                } else if (targetData1.weather[0].main === "Clouds") {
-                    $('.tomorrowWeather').text("くもり");
-                } else if (targetData1.weather[0].main === "Snow") {
-                    $('.tomorrowWeather').text("雪");
-                }
-
-                if (targetData2.weather[0].main === "Clear") {
-                    $('.dayAfterTomorrowWeather').text("晴れ");
-                } else if (targetData2.weather[0].main === "Rain") {
-                    $('.dayAfterTomorrowWeather').text("雨");
-                } else if (targetData2.weather[0].main === "Clouds") {
-                    $('.dayAfterTomorrowWeather').text("くもり");
-                } else if (targetData2.weather[0].main === "Snow") {
-                    $('.dayAfterTomorrowWeather').text("雪");
-                }
-
-                ///各データの表示
-                $('.tomorrowTemp').text(Math.floor((targetData1.main.temp - 273.15) * 10) / 10);
-                $('.tomorrowWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + targetData1.weather[0].icon + '.png ');
-                $('.dayAfterTomorrowTemp').text(Math.floor((targetData2.main.temp - 273.15) * 10) / 10);
-                $('.dayAfterTomorrowWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + targetData2.weather[0].icon + '.png ');
             }
         });
     }

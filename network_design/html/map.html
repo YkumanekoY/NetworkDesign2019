@@ -19,6 +19,10 @@
         var map;
 
         function initMap() {
+            var mapOptions = {
+                disableDefaultUI: false,
+            };
+
             map = new google.maps.Map(document.getElementById('sample'), { // #sampleに地図を埋め込む
                 center: { // 地図の中心を指定
                     lat: 34.7019399, // 緯度

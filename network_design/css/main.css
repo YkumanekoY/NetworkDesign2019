@@ -54,17 +54,13 @@ main img {
     justify-content: space-around;
 }
 
-.day,
-.tomorrow,
-.dayAfterTomorrow {
+.day {
     background-color: rgba(255, 255, 255, 0.5);
     padding: 30px;
     display: inline;
 }
 
-.day,
-.tomorrow,
-.dayAfterTomorrow div {
+.day div {
     font-size: 24px;
 }
 
@@ -80,9 +76,7 @@ footer {
     .weatherMain {
         flex-direction: column;
     }
-    .day,
-    .tomorrow,
-    .dayAfterTomorrow {
+    .day {
         margin-bottom: 10px;
     }
 }

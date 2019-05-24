@@ -1,2 +1,57 @@
-h1{font-size:20px;
-color: #61d4e2}
+body{
+  line-height: 2;
+  background: #f7efed;
+  text-align: center;
+  margin: 20px auto;
+  font-family: YuGothic,'Yu Gothic',sans-serif;
+}
+
+h1{
+  margin: 50px auto;
+  font-size:50px;
+  color: #61d4e2
+}
+
+div{
+  letter-spacing: 10px;
+  font-size:20px;
+  color: #33546d
+}
+
+.description{
+  margin: 50px auto;
+  margin-bottom: 20px ;
+}
+
+.images{
+  width: 20%;
+  text-align: right;
+  margin: 0px auto;
+}
+
+.btn1 {
+  margin: 20px auto;
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
+  padding: 20px 100px ;
+  text-decoration: none;
+  color: #FFF;
+  background: #7fa7b8;
+  border-radius: 10px;
+  transition: .4s;
+}
+
+.btn1:hover {
+  background: #f1485b;
+}
+
+footer{
+  margin-top: 30px ;
+  font-size:10px;
+  color: #33546d;
+}
+
+.copyright{
+  letter-spacing: 0px;
+}

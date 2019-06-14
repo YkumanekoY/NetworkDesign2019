@@ -1,31 +1,33 @@
 ul.global {
     left: 0;
     top: 0;
+    width: auto;
+    height: 47px;
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
 	background-color: #33536d;
+    z-index: 50;
 }
-li {
+ul.global li {
 	float: left;
 	border-right: 1px solid #f7efed;
 }
-li:last-child {
-	border-right: none;
-}
-li a {
+
+ul.global li a {
 	display: block;
 	color: #f7efed;
+    font-size: 15px;
 	text-align: center;
-	padding: 14px 16px;
+	padding: 14px 27px;
 	text-decoration: none;
 }
-li a:hover:not(.active) {
+ul.global li a:hover:not(.active) {
 	background-color: #7fa7b8;
 }
 .active {
-	background-color: #f1485b;
+	background-color: #7fa7b8;
 }
 
 *, *:before, *:after {
@@ -40,6 +42,17 @@ a {
 	text-decoration: none;
 	color: inherit;
 }
+#infowindow-content .title{
+        font-weight: bold;
+      }
+
+      #infowindow-content {
+        display: none;
+      }
+
+      #map #infowindow-content {
+        display: inline;
+      }
 .cp_cont {
 	height: 65vh;
 }
@@ -56,7 +69,7 @@ a {
 	left: -100vw;
 	width: 250px;
 	height: 100%;
-    margin-top: 52px;
+    margin-top: 47px;
 	cursor: pointer;
 	-webkit-transition: 0.53s transform;
 	        transition: 0.53s transform;
@@ -71,9 +84,14 @@ a {
 .cp_offcm_w .cp_menu li {
 	list-style: none;
 }
-.cp_offcm_w .cp_menu li a {
-	display: block;
+.cp_offcm_w .cp_menu li span {
+	display: inline-flex;
+    color: #f7efed;
 	padding: 20px;
+}
+.cp_offcm_w .cp_menu li img {
+    vertical-align: middle;
+    position: relative;
 }
 
 .cp_offcm_w #cp_toggle_w {
@@ -89,9 +107,9 @@ a {
 .cp_offcm_w #cp_toggle_w ~ label {
     position: absolute;
     top: 0;
-    left: 79.77px;
-    width: 65px;
-    height: 52px;
+    left: 98.84px;
+    width: 85px;
+    height: 51px;
 	display: block;
 	cursor: pointer;
 	text-align: center;
@@ -119,7 +137,7 @@ a {
 	left: -100vw;
 	width: 250px;
 	height: 100%;
-    margin-top: 52px;
+    margin-top: 47px;
 	cursor: pointer;
 	-webkit-transition: 0.53s transform;
 	        transition: 0.53s transform;
@@ -136,6 +154,7 @@ a {
 }
 .cp_offcm_r .cp_menu li a {
 	display: block;
+    color: #f7efed;
 	padding: 20px;
 	text-decoration: none;
 }
@@ -153,9 +172,9 @@ a {
 .cp_offcm_r #cp_toggle_r ~ label {
     position: absolute;
     top: 0;
-    left: 144.77px;
-    width: 65px;
-    height: 52px;
+    left: 183.84px;
+    width: 85px;
+    height: 51px;
 	display: block;
 	cursor: pointer;
 	text-align: center;
@@ -169,9 +188,4 @@ a {
 }
 .cp_offcm_r #cp_toggle_r:checked ~ label::before {
     
-}
-/* contents */
-.cp_contents {
-	color: #333333;
-	text-align: center;
 }

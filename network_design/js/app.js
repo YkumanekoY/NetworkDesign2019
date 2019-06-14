@@ -1,3 +1,8 @@
+//緯度・経度
+let lat;
+let lon;
+//0:緯度 1:経度 配列
+var latlogArray = [new Array()][new Array()];
 //天気情報---------------------------------------------------------------------------
 $(document).ready(function() {
     'use strict'
@@ -19,15 +24,10 @@ $(document).ready(function() {
             const positionData = position.coords;
 
             //緯度経度の取得と表示
-            console.log("koko!");
-
             const lat0 = positionData.latitude;
             const lon0 = positionData.longitude;
 
-            console.log(lat0 + ", " + lon0);
-
             $('.location').text('現在の位置（' + Math.floor(lat0 * 100) / 100 + ',' + Math.floor(lon0 * 100) / 100 + ')');
-
             //現在の天気データを呼び出し
             // $.ajax({
             //     url: "https://api.openweathermap.org/data/2.5/weather",
@@ -45,29 +45,29 @@ $(document).ready(function() {
 
             //高度限界まで風船を飛ばすぜ
             var speed = 4.0;
-            let lat;
-            let lon;
+            lat = lat0;
+            lon = lon0;
             for (let alt = 2.0; alt < 11000; alt += speed * 10) {
-                if (alt = 2.0) {
-                    lat = lat0;
-                    lon = lon0;
-                } else {
-                    $.ajax({
-                        type: 'GET',
-                        url: "https://api.openweathermap.org/data/2.5/weather",
-                        dataType: "jsonp",
-                        data: "lat=" + lat + "&lon=" + lon + "&appid=" + APIKEY,
-                        //天気データ呼び出し成功時の挙動
-                        success: function(data) {
-                            //console.log("緯度: " + lat + " ,緯度: " + lon + " ,高度: " + alt);
-                            targetPos(lat, lon, data.wind.deg, data.wind.speed);
-                        },
-                        error: function() {
-                            alert("ファイルを読み込めませんでした。");
-                        },
-                        complete: function() {}
-                    });
-                }
+                $.ajax({
+                    type: 'GET',
+                    url: "https://api.openweathermap.org/data/2.5/weather",
+                    dataType: "jsonp",
+                    data: "lat=" + lat + "&lon=" + lon + "&appid=" + APIKEY,
+                    //天気データ呼び出し成功時の挙動
+                    success: function(data) {
+                        console.log("緯度: " + lat + " ,緯度: " + lon + " ,高度: " + alt);
+                        var an2 = new Array();
+                        an2 = vincenty(lat, lon, data.wind.deg, data.wind.speed);
+                        lat = an[0];
+                        lon = an[1];
+                        console.log("角度: " + data.wind.deg + "速度: " + data.wind.speed);
+                    },
+                    error: function() {
+                        alert("ファイルを読み込めませんでした。");
+                        break;
+                    },
+                    complete: function() {}
+                });
             }
         }
 
@@ -127,29 +127,51 @@ function getAzimuth(degree) {
 //5秒ごとに位置情報を更新
 //setTimeout("targetPos(lat, lon, distance, degree)", 3000);
 
-//風船の目的地
-function targetPos(lat1, lon1, rotation, distance) {
-    console.log("緯度：" + lat1 + "経度：" + lon1);
-    // 緯度経度をラジアンに変換
-    let radLat1 = lat1 * Math.PI / 180; // 緯度１
-    let radLon1 = lon1 * Math.PI / 180; // 経度１
-    //$r = 6378137.0; // 赤道半径
-    console.log("緯度ラジアン：" + radLat1 + "経度ラジアン：" + radLon1);
+//ここから風船の目的地計算用
 
-    r = distance;
-    radLat2 = radLat1 + r * Math.cos(rotation);
-    radLon2 = radLon1 + r * Math.sin(rotation);
-    console.log("緯度ラジアン2：" + radLat2 + "経度ラジアン2：" + radLon2);
+var check;
+var Radius_long = 6378137.0;
+var Henpei = 1 / 298.257222101;
+var Radius_short = Radius_long * (1 - Henpei); // 6356752.314 
 
-    lat = radLat2 * 180 / Math.PI;
-    lon = radLon2 * 180 / Math.PI;
+function doRad(a) {
+    return a / 180 * Math.PI;
+}
 
-    if (lat > 90) 180 - lat;
-    else if (lat < -90) - (180 + lat);
+function radDo(a) {
+    return a * 180 / Math.PI;
+}
 
-    if (lon > 180) 360 - lon;
-    else if (lon < 180) - (lat - 360);
+function xy(x, y) {
+    return Math.pow(x, y);
+}
 
-    console.log("緯度２：" + lat + "経度２：" + lon);
+function vincenty(lat1, lng1, alpha12, length) {
+    lat1 = doRad(lat1);
+    lng1 = doRad(lng1);
+    alpha12 = doRad(alpha12);
 
+    var U1 = Math.atan((1 - Henpei) * Math.tan(lat1));
+    var sigma1 = Math.atan(Math.tan(U1) / Math.cos(alpha12));
+    var alpha = Math.asin(Math.cos(U1) * Math.sin(alpha12));
+    var u2 = xy(Math.cos(alpha), 2) * (xy(Radius_long, 2) - xy(Radius_short, 2)) / xy(Radius_short, 2);
+    var A = 1 + (u2 / 16384) * (4096 + u2 * (-768 + u2 * (320 - 175 * u2)));
+    var B = (u2 / 1024) * (256 + u2 * (-128 + u2 * (74 - 47 * u2)));
+    var sigma = length / Radius_short / A;
+    do {
+        var sigma0 = sigma;
+        var dm2 = 2 * sigma1 + sigma;
+        var x = Math.cos(sigma) * (-1 + 2 * xy(Math.cos(dm2), 2)) - B / 6 * Math.cos(dm2) * (-3 + 4 * xy(Math.sin(dm2), 2)) * (-3 + 4 * xy(Math.cos(dm2), 2));
+        var dSigma = B * Math.sin(sigma) * (Math.cos(dm2) + B / 4 * x);
+        sigma = length / Radius_short / A + dSigma;
+    } while (Math.abs(sigma0 - sigma) > 1e-9);
+
+    var x = Math.sin(U1) * Math.cos(sigma) + Math.cos(U1) * Math.sin(sigma) * Math.cos(alpha12)
+    var y = (1 - Henpei) * xy(xy(Math.sin(alpha), 2) + xy(Math.sin(U1) * Math.sin(sigma) - Math.cos(U1) * Math.cos(sigma) * Math.cos(alpha12), 2), 1 / 2);
+    var lamda = Math.sin(sigma) * Math.sin(alpha12) / (Math.cos(U1) * Math.cos(sigma) - Math.sin(U1) * Math.sin(sigma) * Math.cos(alpha12));
+    lamda = Math.atan(lamda);
+    var C = (Henpei / 16) * xy(Math.cos(alpha), 2) * (4 + Henpei * (4 - 3 * xy(Math.cos(alpha), 2)));
+    var z = Math.cos(dm2) + C * Math.cos(sigma) * (-1 + 2 * xy(Math.cos(dm2), 2));
+    var omega = lamda - (1 - C) * Henpei * Math.sin(alpha) * (sigma + C * Math.sin(sigma) * z);
+    return [radDo(Math.atan(x / y)), radDo(lng1 + omega)];
 }

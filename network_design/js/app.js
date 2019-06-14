@@ -19,10 +19,15 @@ $(document).ready(function() {
             const positionData = position.coords;
 
             //緯度経度の取得と表示
+            console.log("koko!");
+
             const lat0 = positionData.latitude;
             const lon0 = positionData.longitude;
 
+            console.log(lat0 + ", " + lon0);
+
             $('.location').text('現在の位置（' + Math.floor(lat0 * 100) / 100 + ',' + Math.floor(lon0 * 100) / 100 + ')');
+
             //現在の天気データを呼び出し
             // $.ajax({
             //     url: "https://api.openweathermap.org/data/2.5/weather",
@@ -40,10 +45,12 @@ $(document).ready(function() {
 
             //高度限界まで風船を飛ばすぜ
             var speed = 4.0;
+            let lat;
+            let lon;
             for (let alt = 2.0; alt < 11000; alt += speed * 10) {
                 if (alt = 2.0) {
-                    let lat = lat0;
-                    let lon = lon0;
+                    lat = lat0;
+                    lon = lon0;
                 } else {
                     $.ajax({
                         type: 'GET',

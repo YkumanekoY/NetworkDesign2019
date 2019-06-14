@@ -58,8 +58,8 @@ $(document).ready(function() {
                         console.log("緯度: " + lat + " ,緯度: " + lon + " ,高度: " + alt);
                         var an2 = new Array();
                         an2 = vincenty(lat, lon, data.wind.deg, data.wind.speed);
-                        lat = an[0];
-                        lon = an[1];
+                        lat = an2[0];
+                        lon = an2[1];
                         console.log("角度: " + data.wind.deg + "速度: " + data.wind.speed);
                     },
                     error: function() {

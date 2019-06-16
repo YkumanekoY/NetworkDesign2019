@@ -1,3 +1,4 @@
+
 //緯度 経度 配列
 var latArray = new Array();
 var lonArray = new Array();
@@ -60,14 +61,15 @@ $(document).ready(function() {
 
         //現在位置の取得に失敗した場合
         function error(error) {
-            alert("位置情報が取得できなかったため、東京から風船を飛ばします");
+            alert("位置情報が取得できなかったため、東京の天気を表示します");
             $('.location').text('東京');
 
             TokyoWeather();
+
         }
         //現在位置がそもそも取得できない場合
     } else {
-        alert("位置情報が取得できなかったため、東京から風船を飛ばします");
+        alert("位置情報が取得できなかったため、東京の天気を表示します");
         $('.location').text('東京');
 
         TokyoWeather();
@@ -75,6 +77,7 @@ $(document).ready(function() {
 
     //東京の天気
     function TokyoWeather() {
+
         //現在の天気データ呼び出し
         $.ajax({
             url: "https://api.openweathermap.org/data/2.5/weather",
@@ -82,10 +85,23 @@ $(document).ready(function() {
             data: "q=Tokyo,jp&appid=" + APIKEY,
             //天気データ呼び出し成功時の挙動
             success: function(data) {
-                //風速
-                $('.windSpeed').text(data.wind.speed);
-                //風向きについての処理
-                $('.windDeg').text(data.wind.deg + "°(" + getAzimuth(data.wind.deg) + ")");
+                if (data.weather[0].main === "Sunny" || data.weather[0].main === "Clear") {
+                    $('body').css('background-image', 'url(Sunny.jpg)');
+                    $('.dayWeather').text("晴れ");
+                } else if (data.weather[0].main === "Rain") {
+                    $('body').css('background-image', 'url(Rain.jpg)');
+                    $('.dayWeather').text("雨");
+                } else if (data.weather[0].main === "Clouds") {
+                    $('body').css('background-image', 'url(Cloudy.jpg)');
+                    $('.dayWeather').text("くもり");
+                } else if (data.weather[0].main === "Snow") {
+                    $('body').css('background-image', 'url(Snowy.jpg)');
+                    $('.dayWeather').text("雪");
+                }
+
+                //各データの表示
+                $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);
+                $('.dayWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + data.weather[0].icon + '.png ');
             }
         });
     }
@@ -107,7 +123,7 @@ function getAzimuth(degree) {
         if (degree < i) {
             break
         }
-        count++;
+        return dname[count];
     }
     return dname[count];
 }

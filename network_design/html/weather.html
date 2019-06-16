@@ -27,9 +27,7 @@
     <input id="pac-input" class="controls" type="text" placeholder="Search Box">
     <div id="sample"></div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhp7uRLLhGeWb06tXM7YWo2UTZmNoTb1U&callback=initMap" async></script>
-
-    <script>
+    <script type="text/javascript">
         function initMap() {
             if (navigator.geolocation) {
                 // 現在地を取得
@@ -231,6 +229,7 @@
         </div>
     </div>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhp7uRLLhGeWb06tXM7YWo2UTZmNoTb1U&libraries=places&callback=initMap" async></script>
     <script src="../js/jquery-3.3.1.min.js"></script>
     <script src="../js/test.js"></script>
 </body>

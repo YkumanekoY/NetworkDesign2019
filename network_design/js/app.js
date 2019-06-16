@@ -21,8 +21,8 @@ $(document).ready(function() {
             const positionData = position.coords;
 
             //最初の位置の緯度経度取得
-            const lat0 = positionData.latitude;
-            const lon0 = positionData.longitude;
+            const lat0 = positionData.latitude.toFixed(7);
+            const lon0 = positionData.longitude.toFixed(7);
 
             //緯度経度の表示
             $('.location').text('現在の位置（' + Math.floor(lat0 * 100) / 100 + ',' + Math.floor(lon0 * 100) / 100 + ')');
@@ -43,18 +43,19 @@ $(document).ready(function() {
 
                         console.log("風向き：" + data.wind.deg + " 風速：" + data.wind.speed);
                         latArray.push(
-                            vincenty(latArray[count], lonArray[count], data.wind.deg, data.wind.speed)[0]
+                            vincenty(latArray[count], lonArray[count], data.wind.deg, data.wind.speed)[0].toFixed(7)
                         );
                         lonArray.push(
-                            vincenty(latArray[count], lonArray[count], data.wind.deg, data.wind.speed)[1]
+                            vincenty(latArray[count], lonArray[count], data.wind.deg, data.wind.speed)[1].toFixed(7)
                         );
                     },
                     error: function() {
-                        break;
-                    },
-                    complete: function() {}
+                        latArray[count] = latArray[count - 1];
+                        lonArray[count] = lonArray[count - 1];
+                        console.log("Wow!");
+                    }
                 });
-                console.log("緯度: " + latArray[count] + ", 経度:" + lonArray[count]);
+                console.log(count + " 緯度: " + latArray[count] + ", 経度:" + lonArray[count]);
                 count++;
             }
         }
@@ -106,6 +107,8 @@ $(document).ready(function() {
         });
     }
 }());
+
+//風船を飛ばす
 
 //---------------------------------------------------------------------------
 

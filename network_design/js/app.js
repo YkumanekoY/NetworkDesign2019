@@ -1,4 +1,3 @@
-
 //緯度 経度 配列
 var latArray = new Array();
 var lonArray = new Array();
@@ -41,6 +40,8 @@ $(document).ready(function() {
                     data: "lat=" + latArray[count] + "&lon=" + lonArray[count] + "&appid=" + APIKEY,
                     //天気データ呼び出し成功時の挙動
                     success: function(data) {
+
+                        console.log("風向き：" + data.wind.deg + " 風速：" + data.wind.speed);
                         latArray.push(
                             vincenty(latArray[count], lonArray[count], data.wind.deg, data.wind.speed)[0]
                         );
@@ -49,12 +50,11 @@ $(document).ready(function() {
                         );
                     },
                     error: function() {
-                        alert("ファイルを読み込めませんでした。");
                         break;
                     },
                     complete: function() {}
                 });
-                console.log("緯度: " + latlonArray[count][0] + ", 経度:" + latlonArray[count][1]);
+                console.log("緯度: " + latArray[count] + ", 経度:" + lonArray[count]);
                 count++;
             }
         }

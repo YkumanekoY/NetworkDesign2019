@@ -1,19 +1,16 @@
-//緯度・経度
-let lat;
-let lon;
-//0:緯度 1:経度 配列
-var latlogArray = [new Array()][new Array()];
+//緯度 経度 配列
+var latArray = new Array();
+var lonArray = new Array();
+
 //天気情報---------------------------------------------------------------------------
 $(document).ready(function() {
     'use strict'
 
     const APIKEY = "f9afb324cd9adca6010dcb01b05fe097";
 
-    //翌日9時のデータの場所を割り出す
+    //今日のデータを取り出す
     const date = new Date();
     const nowHour = date.getHours();
-    // const whichTomorrowWeatherData = Math.floor((24 - nowHour + 9) / 3);
-    // const whichDayAfterTomorrowWeatherData = Math.floor((24 - nowHour + 33) / 3);
 
     //現在位置の取得ができるかどうか
     if (navigator.geolocation) {
@@ -23,44 +20,32 @@ $(document).ready(function() {
         function success(position) {
             const positionData = position.coords;
 
-            //緯度経度の取得と表示
+            //最初の位置の緯度経度取得
             const lat0 = positionData.latitude;
             const lon0 = positionData.longitude;
 
+            //緯度経度の表示
             $('.location').text('現在の位置（' + Math.floor(lat0 * 100) / 100 + ',' + Math.floor(lon0 * 100) / 100 + ')');
-            //現在の天気データを呼び出し
-            // $.ajax({
-            //     url: "https://api.openweathermap.org/data/2.5/weather",
-            //     dataType: "jsonp",
-            //     data: "lat=" + lat + "&lon=" + lon + "&appid=" + APIKEY,
-            //     //天気データ呼び出し成功時の挙動
-            //     success: function(data) {
-            //         //風速
-            //         $('.windSpeed').text(data.wind.speed);
-            //         //風向きについての処理
-            //         $('.windDeg').text(data.wind.deg + "°(" + getAzimuth(data.wind.deg) + ")");
-            //     }
-            // });
 
-
-            //高度限界まで風船を飛ばすぜ
+            //高度限界まで風船を飛ばすぜ　altは高度
             var speed = 4.0;
-            lat = lat0;
-            lon = lon0;
+            latArray.push(lat0);
+            lonArray.push(lon0);
+            var count = 0;
             for (let alt = 2.0; alt < 11000; alt += speed * 10) {
                 $.ajax({
                     type: 'GET',
                     url: "https://api.openweathermap.org/data/2.5/weather",
                     dataType: "jsonp",
-                    data: "lat=" + lat + "&lon=" + lon + "&appid=" + APIKEY,
+                    data: "lat=" + latArray[count] + "&lon=" + lonArray[count] + "&appid=" + APIKEY,
                     //天気データ呼び出し成功時の挙動
                     success: function(data) {
-                        console.log("緯度: " + lat + " ,緯度: " + lon + " ,高度: " + alt);
-                        var an2 = new Array();
-                        an2 = vincenty(lat, lon, data.wind.deg, data.wind.speed);
-                        lat = an[0];
-                        lon = an[1];
-                        console.log("角度: " + data.wind.deg + "速度: " + data.wind.speed);
+                        latArray.push(
+                            vincenty(latArray[count], lonArray[count], data.wind.deg, data.wind.speed)[0]
+                        );
+                        lonArray.push(
+                            vincenty(latArray[count], lonArray[count], data.wind.deg, data.wind.speed)[1]
+                        );
                     },
                     error: function() {
                         alert("ファイルを読み込めませんでした。");
@@ -68,6 +53,8 @@ $(document).ready(function() {
                     },
                     complete: function() {}
                 });
+                console.log("緯度: " + latlonArray[count][0] + ", 経度:" + latlonArray[count][1]);
+                count++;
             }
         }
 
@@ -107,6 +94,7 @@ $(document).ready(function() {
 //---------------------------------------------------------------------------
 
 //角度を方角に変換
+//今は使ってない？
 function getAzimuth(degree) {
     var dname = [
         "北", "北北東", "北東", "東北東",
@@ -127,8 +115,8 @@ function getAzimuth(degree) {
 //5秒ごとに位置情報を更新
 //setTimeout("targetPos(lat, lon, distance, degree)", 3000);
 
-//ここから風船の目的地計算用
 
+//---ここから風船の目的地計算用--------------------------
 var check;
 var Radius_long = 6378137.0;
 var Henpei = 1 / 298.257222101;

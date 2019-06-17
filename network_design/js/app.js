@@ -1,6 +1,8 @@
 //緯度 経度 配列
 var latArray = new Array();
 var lonArray = new Array();
+var lat = 0;
+var lon = 0;
 
 //天気情報---------------------------------------------------------------------------
 $(document).ready(function() {
@@ -31,32 +33,32 @@ $(document).ready(function() {
             var speed = 4.0;
             latArray.push(lat0);
             lonArray.push(lon0);
+            lat = lat0;
+            lon = lon0;
+            var windSpeed;
+            var windDeg;
             var count = 0;
             for (let alt = 2.0; alt < 11000; alt += speed * 10) {
+                var v2 = new Array();
                 $.ajax({
                     type: 'GET',
                     url: "https://api.openweathermap.org/data/2.5/weather",
                     dataType: "jsonp",
-                    data: "lat=" + latArray[count] + "&lon=" + lonArray[count] + "&appid=" + APIKEY,
+                    data: "lat=" + lat + "&lon=" + lon + "&appid=" + APIKEY,
                     //天気データ呼び出し成功時の挙動
                     success: function(data) {
-
+                        console.log(count + " 緯度: " + lat + ", 経度:" + lon);
                         console.log("風向き：" + data.wind.deg + " 風速：" + data.wind.speed);
-                        latArray.push(
-                            vincenty(latArray[count], lonArray[count], data.wind.deg, data.wind.speed)[0].toFixed(7)
-                        );
-                        lonArray.push(
-                            vincenty(latArray[count], lonArray[count], data.wind.deg, data.wind.speed)[1].toFixed(7)
-                        );
+                        v2 = vincenty(lat, lon, data.wind.deg, data.wind.speed);
+                        lat = v2[0];
+                        lon = v2[1];
+                        latArray.push(lat);
+                        lonArray.push(lon);
                     },
                     error: function() {
-                        latArray[count] = latArray[count - 1];
-                        lonArray[count] = lonArray[count - 1];
-                        console.log("Wow!");
+                        return;
                     }
                 });
-                console.log(count + " 緯度: " + latArray[count] + ", 経度:" + lonArray[count]);
-                count++;
             }
         }
 
@@ -106,10 +108,14 @@ $(document).ready(function() {
             }
         });
     }
+
+    function sleep(waitMsec) {
+        var startMsec = new Date();
+
+        // 指定ミリ秒間だけループさせる（CPUは常にビジー状態）
+        while (new Date() - startMsec < waitMsec);
+    }
 }());
-
-//風船を飛ばす
-
 //---------------------------------------------------------------------------
 
 //角度を方角に変換
@@ -180,5 +186,7 @@ function vincenty(lat1, lng1, alpha12, length) {
     var C = (Henpei / 16) * xy(Math.cos(alpha), 2) * (4 + Henpei * (4 - 3 * xy(Math.cos(alpha), 2)));
     var z = Math.cos(dm2) + C * Math.cos(sigma) * (-1 + 2 * xy(Math.cos(dm2), 2));
     var omega = lamda - (1 - C) * Henpei * Math.sin(alpha) * (sigma + C * Math.sin(sigma) * z);
+    //latArray.push(radDo(Math.atan(x / y)));
+    //lonArray.push(radDo(lng1 + omega));
     return [radDo(Math.atan(x / y)), radDo(lng1 + omega)];
 }

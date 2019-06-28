@@ -7,16 +7,30 @@
     <title>Top page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="./css/top.css" />
+
+    <script language="javascript">
+      var ch　= balloon3.png; // オブジェクトの番号 (番号.jpg　が表示される)
+      function disp()
+      {
+        ch=(ch+1)% 9 ;
+        stnm= ch + "balloon4.png" ; //　マウスクリックで画像ファイル名を変更　：　stnmに（番号.jpg）を代入
+
+        document.images["s"].src = stnm ; // name="s"の　img タグのファイルをstnmにする
+      }
+    </script>
 </head>
 
 <body>
+
+  <div id = "bodyfadeout">
     <header>
         <h1>タイトルをここに入れてね</h1>
     </header>
+
     <main>
       <div class="col3">
         <div></div>
-          <div class = "description">
+        <div class = "description">
               風船が飛ぶよ風船が飛ぶよ風船が飛ぶよ風船が飛ぶよ風船が飛ぶよ
               <br>
               <br>
@@ -28,23 +42,26 @@
               <br>
               風船が飛ぶよ
           </div>
-        <div class = "images">
-        <img src = "./images/balloon.png" class = "images">
-        </div>
+          <div class = "images">
+            <img src = "./images/balloon3.png" class = "images">
+          </div>
       </div>
     </main>
+
     <footer>
       <div class = "footer">
-          <a href = "./html/weather.html" class = "btn1">
-            <i class = "fa fa-chevron-right"></i> 風船を飛ばしてみる
-          </a>
+        <button id = "btn1" onclick = " location.href = './html/map.html' ">
+          風船を飛ばしてみる
+        </button>
         <br>
-      <div class = "copyright">
-        ネットワーク実習A F班
+        <div class = "copyright">
+          ネットワーク実習A F班
+        </div>
       </div>
-    </div>
     </footer>
 
+    <script src = "./js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="./js/top.js"></script>
 </body>
 
 </html>

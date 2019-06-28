@@ -5,26 +5,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <link href="../css/map.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-    <title>テスト</title>
-    <style>
-        #sample {
-            width: auto;
-            height: 800px;
-        }
-    </style>
+    <title>マップ</title>
 </head>
 
 <body>
-    <div>
-        <ul class="global"> 
-	       <li><a href="#home">Home</a></li>
-	       <li><a href="#weather">気象</a></li>
-	       <li><a href="#root">経路</a></li>
-        </ul>
+    <header tabindex="0"></header>
+    <div id="nav-container">
+        <div class="bg"></div>
+        <div class="balloon">
+            <img src="assets/images/balloon.png">
+            <a href="../index.html"> </a>
+        </div>
+        <div class="button1" tabindex="0">
+            <span class="icon-bar1"></span>
+            <span class="icon-bar1"></span>
+            <span class="icon-bar1"></span>
+        </div>
+        <div class="button2" tabindex="0">
+            <span class="icon-bar2"></span>
+            <span class="icon-bar2"></span>
+            <span class="icon-bar2"></span>
+        </div>
+        <div id="nav-content1" tabindex="0">
+            <ul>
+                <li><span>風速：</span><span class="windSpeed"></span><span>m/s</span></li>
+                <li><span>風向：</span><span class="windDeg"></span></li>
+                <li><span>気温：</span><span class="nowTemp"></span><span>度</span></li>
+                <li><span>天候：</span><img class="dayWeatherIcon"></li>
+            </ul>
+        </div>
+        <div id="nav-content2" tabindex="0">
+            <ul>
+                <li><span>経路</span></li>
+            </ul>
+        </div>
     </div>
 
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    
     <div id="sample"></div>
     
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhp7uRLLhGeWb06tXM7YWo2UTZmNoTb1U&libraries=places&callback=initMap" async></script>
@@ -235,13 +254,6 @@
                         };
 
                         var map = new google.maps.Map(mapArea, mapOptions);
-                        var input = document.getElementById('pac-input');
-                        var searchBox = new google.maps.places.SearchBox(input);
-                        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(input);
-                        
-                        map.addListener('bounds_changed', function() {
-                            searchBox.setBounds(map.getBounds());
-                        });
                         
                         var markerOptions = {
                             map: map,
@@ -263,38 +275,7 @@
 
 
 
-    <div class="cp_cont">
-        <div class="cp_offcm_w"> 
-            <input type="checkbox" id="cp_toggle_w">
-                <label for="cp_toggle_w">
-                    <label for="cp_toggle_r">
-                        <a href="#weather"></a>
-                    </label>
-                </label>
-            <div class="cp_menu"> 
-                <ul1>
-                    <li><span>風速：</span><span class="windSpeed"></span><span>m/s</span></li>
-                    <li><span>風向：</span><span class="windDeg"></span></li>
-                    <li><span>気温：</span><span class="nowTemp"></span><span>度</span></li>
-                    <li><span>天候：</span><img class="dayWeatherIcon"></li>
-                </ul1>
-            </div>
-        </div>
-
-
-        <div class="cp_offcm_r">
-            <input type="checkbox" id="cp_toggle_r">
-            <label for="cp_toggle_r">
-                <a href="#root"></a>
-            </label>
-            <div class="cp_menu"> 
-                <ul1>
-                    <li><a href="#">経路</a></li>
-                    
-                </ul1>
-            </div>
-        </div>
-    </div>
+    
 
     <script src="../js/jquery-3.3.1.min.js"></script>
     <script src="../js/app.js"></script>

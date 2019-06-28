@@ -1,111 +1,141 @@
-
 //緯度 経度 配列
 var latArray = new Array();
 var lonArray = new Array();
+var lat = 0;
+var lon = 0;
 
 //天気情報---------------------------------------------------------------------------
-$(document).ready(function() {
-    'use strict'
 
-    const APIKEY = "f9afb324cd9adca6010dcb01b05fe097";
+$(document).ready(
+    $.when(function() {
+        'use strict'
 
-    //今日のデータを取り出す
-    const date = new Date();
-    const nowHour = date.getHours();
+        const APIKEY = "f9afb324cd9adca6010dcb01b05fe097";
 
-    //現在位置の取得ができるかどうか
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(success, error);
+        //今日のデータを取り出す
+        const date = new Date();
+        const nowHour = date.getHours();
 
-        // 現在位置の取得に成功した場合
-        function success(position) {
-            const positionData = position.coords;
+        //現在位置の取得ができるかどうか
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success, error);
 
-            //最初の位置の緯度経度取得
-            const lat0 = positionData.latitude;
-            const lon0 = positionData.longitude;
+            // 現在位置の取得に成功した場合
+            function success(position) {
+                const positionData = position.coords;
 
-            //緯度経度の表示
-            $('.location').text('現在の位置（' + Math.floor(lat0 * 100) / 100 + ',' + Math.floor(lon0 * 100) / 100 + ')');
+                //最初の位置の緯度経度取得
+                const lat0 = positionData.latitude;
+                const lon0 = positionData.longitude;
 
-            //高度限界まで風船を飛ばすぜ　altは高度
-            var speed = 4.0;
-            latArray.push(lat0);
-            lonArray.push(lon0);
-            var count = 0;
-            for (let alt = 2.0; alt < 11000; alt += speed * 10) {
-                $.ajax({
-                    type: 'GET',
-                    url: "https://api.openweathermap.org/data/2.5/weather",
-                    dataType: "jsonp",
-                    data: "lat=" + latArray[count] + "&lon=" + lonArray[count] + "&appid=" + APIKEY,
-                    //天気データ呼び出し成功時の挙動
-                    success: function(data) {
-                        latArray.push(
-                            vincenty(latArray[count], lonArray[count], data.wind.deg, data.wind.speed)[0]
-                        );
-                        lonArray.push(
-                            vincenty(latArray[count], lonArray[count], data.wind.deg, data.wind.speed)[1]
-                        );
-                    },
-                    error: function() {
-                        alert("ファイルを読み込めませんでした。");
-                        break;
-                    },
-                    complete: function() {}
-                });
-                console.log("緯度: " + latlonArray[count][0] + ", 経度:" + latlonArray[count][1]);
-                count++;
+                //緯度経度の表示
+                $('.location').text('現在の位置（' + Math.floor(lat0 * 100) / 100 + ',' + Math.floor(lon0 * 100) / 100 + ')');
+
+                //高度限界まで風船を飛ばすぜ　altは高度
+                var speed = 4.0;
+                latArray.push(lat0);
+                lonArray.push(lon0);
+                lat = lat0;
+                lon = lon0;
+                for (let alt = 2.0; alt < 11000; alt += speed * 10) {
+                    var v2 = new Array();
+                    $.when(
+                        $.ajax({
+                            type: 'GET',
+                            url: "https://api.openweathermap.org/data/2.5/weather",
+                            dataType: "jsonp",
+                            data: "lat=" + lat + "&lon=" + lon + "&appid=" + APIKEY,
+                            //天気データ呼び出し成功時の挙動
+                            success: function(data) {
+                                //console.log(count + " 緯度: " + lat + ", 経度:" + lon);
+                                //console.log("風向き：" + data.wind.deg + " 風速：" + data.wind.speed);
+                                v2 = vincenty(lat, lon, data.wind.deg, data.wind.speed);
+                                lat = v2[0];
+                                lon = v2[1];
+                            },
+                            error: function() {
+                                return;
+                            }
+                        })
+                    ).done(function() {
+                        latArray.push(lat);
+                        lonArray.push(lon);
+                        i = lonArray.length - 1;
+                        console(i);
+                        var addText = latArray[i] + ", " + lonArray[i] + '\n';
+                        // テキストボックスのデータを取得します
+                        var getData = String($("#gps").val());
+                        // 取得データと追記文言をくっつけて出力します
+                        $("#gps").val(getData + addText);
+                    });
+                }
             }
-        }
 
-        //現在位置の取得に失敗した場合
-        function error(error) {
+            //現在位置の取得に失敗した場合
+            function error(error) {
+                alert("位置情報が取得できなかったため、東京の天気を表示します");
+                $('.location').text('東京');
+
+                TokyoWeather();
+
+            }
+            //現在位置がそもそも取得できない場合
+        } else {
             alert("位置情報が取得できなかったため、東京の天気を表示します");
             $('.location').text('東京');
 
             TokyoWeather();
-
         }
-        //現在位置がそもそも取得できない場合
-    } else {
-        alert("位置情報が取得できなかったため、東京の天気を表示します");
-        $('.location').text('東京');
 
-        TokyoWeather();
-    }
+        //東京の天気
+        function TokyoWeather() {
 
-    //東京の天気
-    function TokyoWeather() {
+            //現在の天気データ呼び出し
+            $.ajax({
+                url: "https://api.openweathermap.org/data/2.5/weather",
+                dataType: "jsonp",
+                data: "q=Tokyo,jp&appid=" + APIKEY,
+                //天気データ呼び出し成功時の挙動
+                success: function(data) {
+                    if (data.weather[0].main === "Sunny" || data.weather[0].main === "Clear") {
+                        $('body').css('background-image', 'url(Sunny.jpg)');
+                        $('.dayWeather').text("晴れ");
+                    } else if (data.weather[0].main === "Rain") {
+                        $('body').css('background-image', 'url(Rain.jpg)');
+                        $('.dayWeather').text("雨");
+                    } else if (data.weather[0].main === "Clouds") {
+                        $('body').css('background-image', 'url(Cloudy.jpg)');
+                        $('.dayWeather').text("くもり");
+                    } else if (data.weather[0].main === "Snow") {
+                        $('body').css('background-image', 'url(Snowy.jpg)');
+                        $('.dayWeather').text("雪");
+                    }
 
-        //現在の天気データ呼び出し
-        $.ajax({
-            url: "https://api.openweathermap.org/data/2.5/weather",
-            dataType: "jsonp",
-            data: "q=Tokyo,jp&appid=" + APIKEY,
-            //天気データ呼び出し成功時の挙動
-            success: function(data) {
-                if (data.weather[0].main === "Sunny" || data.weather[0].main === "Clear") {
-                    $('body').css('background-image', 'url(Sunny.jpg)');
-                    $('.dayWeather').text("晴れ");
-                } else if (data.weather[0].main === "Rain") {
-                    $('body').css('background-image', 'url(Rain.jpg)');
-                    $('.dayWeather').text("雨");
-                } else if (data.weather[0].main === "Clouds") {
-                    $('body').css('background-image', 'url(Cloudy.jpg)');
-                    $('.dayWeather').text("くもり");
-                } else if (data.weather[0].main === "Snow") {
-                    $('body').css('background-image', 'url(Snowy.jpg)');
-                    $('.dayWeather').text("雪");
+                    //各データの表示
+                    $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);
+                    $('.dayWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + data.weather[0].icon + '.png ');
                 }
+            });
+        }
 
-                //各データの表示
-                $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);
-                $('.dayWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + data.weather[0].icon + '.png ');
+        function sleep(waitMsec) {
+            var startMsec = new Date();
+
+            // 指定ミリ秒間だけループさせる（CPUは常にビジー状態）
+            while (new Date() - startMsec < waitMsec);
+        }
+    }).done(function() {
+            console.log(latArray.length);
+            console.log(lonArray.length);
+            console.log(lonArray);
+            for (var i = 0; i < latArray.length && i < lonArray.length; i++) {
+                $("#gps").val(latArray[i] + ", " + lonArray[i] + '\n');
+                console(i);
             }
-        });
-    }
-}());
+        }
+
+    )
+);
 
 //---------------------------------------------------------------------------
 
@@ -177,5 +207,6 @@ function vincenty(lat1, lng1, alpha12, length) {
     var C = (Henpei / 16) * xy(Math.cos(alpha), 2) * (4 + Henpei * (4 - 3 * xy(Math.cos(alpha), 2)));
     var z = Math.cos(dm2) + C * Math.cos(sigma) * (-1 + 2 * xy(Math.cos(dm2), 2));
     var omega = lamda - (1 - C) * Henpei * Math.sin(alpha) * (sigma + C * Math.sin(sigma) * z);
+    //console.log(radDo(Math.atan(x / y)) + ", " + radDo(lng1 + omega))
     return [radDo(Math.atan(x / y)), radDo(lng1 + omega)];
 }

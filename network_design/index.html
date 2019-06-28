@@ -6,25 +6,77 @@
     <meta charset="utf-8" />
     <title>Top page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="./css/main.css" />
-</head>
+    <link rel="stylesheet" href="./css/top.css" />
+
+    <script language="javascript">
+      var ch　= balloon3.png; // オブジェクトの番号 (番号.jpg　が表示される)
+      function disp()
+      {
+        ch=(ch+1)% 9 ;
+        stnm= ch + "balloon4.png" ; //　マウスクリックで画像ファイル名を変更　：　stnmに（番号.jpg）を代入
+
+        document.images["s"].src = stnm ; // name="s"の　img タグのファイルをstnmにする
+      }
+    </script>
 
 <body>
+
+  <div id = "bodyfadeout">
     <header>
-        <h1>top page</h1>
+        <h1>風船を飛ばしてみよう</h1>
     </header>
+
     <main>
-        <div>
-            <a href="./html/weather.html">お天気のテストページ</a>
-        </div>
-        <div>
-            <a href="./html/map.html">地図のテストページ</a>
-        </div>
-    </main>
+      <div class="col3">
+        <div></div>
+        <div class = "description">
+              本来はここにサイトの説明文が入ります。
+              <br>
+              (どういうAPIを使い、どういうサイトなのか)
+              <br>
+              文章は最終発表までに考えるので、
+              <br>
+              今回は進捗をここに報告します。
+              <br>
+              <br>
+              今回までの進捗
+              <br>
+              ①フォントを読み込む
+              <br>
+              ②ページを更新するときにフェードインさせる
+              <br>
+              ③ボタンリンクを押すとフェードアウトさせる
+              <br>
+              <br>
+              最終発表までにやらなきゃいけないことは、
+              <br>
+              ①ボタンリンクをクリックすると画像が変わる
+              <br>
+              ②地図のページと繋げてフェードインさせる
+              <br>
+              ③文章を考える
+              <br>
+              <br>
+              頑張ります！
+          </div>
+          <div class = "images">
+            <img src = "./images/balloon3.png" class = "images">
+          </div>
+      </div>
     <footer>
-        ここはまだまだ仮やで！
+      <div class = "footer">
+        <button id = "btn1" >
+          風船を飛ばしてみる
+        </button>
+        <br>
+        <div class = "copyright">
+          ネットワーク実習A F班
+        </div>
+      </div>
     </footer>
 
+    <script src = "./js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="./js/top.js"></script>
 </body>
 
 </html>

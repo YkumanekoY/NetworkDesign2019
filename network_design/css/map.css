@@ -113,14 +113,18 @@ header {
 #button1:hover {
     background: #7fa7b8;
 }
+#drawer-checkbox1:checked ~ #button1 {
+    background: #7fa7b8;
+}
 
 #nav-content1 {
+    overflow: auto;
     margin-top: 47px;
     padding: 0px;
     z-index: 21;
-    width: 90%;
-    max-width: 200px;
-    position: absolute;
+    width: 200px;
+    max-width: 90%;
+    position: fixed;
     top: 0;
     left: 0;
     height: calc(100% - 47px);
@@ -130,7 +134,9 @@ header {
     transform: translateX(-100%);
     transition: transform .3s;
     will-change: transform;
-    contain: paint;
+}
+#drawer-checkbox1:checked ~ #nav-content1 {
+    transform: translateX(0);
 }
 
 #nav-content1 ul {
@@ -158,6 +164,24 @@ header {
 
 #nav-container:focus-within #nav-content1 {
     transform: none;
+}
+
+#drawer-close1 {
+    display: none;
+    position: fixed;
+    z-index: 19;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0;
+    transition: all 0.3s ease-in-out 0s;
+    pointer-events: auto;
+}
+#drawer-checkbox1:checked ~ #drawer-close1 {
+  display: block;
+  opacity: 0;
 }
 
 
@@ -189,26 +213,32 @@ header {
 #button2:hover {
     background: #7fa7b8;
 }
+#drawer-checkbox2:checked ~ #button2 {
+    background: #7fa7b8;
+}
 
 
 #nav-content2 {
+    overflow: auto;
     margin-top: 47px;
     padding: 0px;
-    z-index: 20;
-    width: 90%;
-    max-width: 200px;
-    position: absolute;
+    z-index: 21;
+    width: 200px;
+    max-width: 90%;
+    position: fixed;
     top: 0;
     left: 0;
     height: calc(100% - 47px);
     background: #7fa7b8;
     pointer-events: auto;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
     transform: translateX(-100%);
     transition: transform .3s;
     will-change: transform;
-    contain: paint;
 }
+#drawer-checkbox2:checked ~ #nav-content2 {
+    transform: translateX(0);
+}
+
 
 #nav-content2 ul {
     margin: 0px;
@@ -233,7 +263,23 @@ header {
     transform: none;
 }
 
-
+#drawer-close2 {
+    display: none;
+    position: fixed;
+    z-index: 19;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0;
+    transition: all 0.3s ease-in-out 0s;
+    pointer-events: auto;
+}
+#drawer-checkbox2:checked ~ #drawer-close2 {
+  display: block;
+  opacity: 0;
+}
 
 
 

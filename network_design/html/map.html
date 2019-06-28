@@ -14,37 +14,51 @@
     <header tabindex="0"></header>
     <div id="nav-container">
         <div class="bg"></div>
+        
+        
         <label id="balloon">
             <div>
                 <img src="assets/images/balloon.png">
                 <a href="../index.html"></a>
             </div>        
         </label>
-        <input id="drawer-checkbox1" type="checkbox">
-        <label id="button1" for="drawer-checkbox1" tabindex="0">
-            <div>
-                <img src="assets/images/balloon.png">
+        
+        
+        <div id="weather">
+            <input id="drawer-checkbox1" type="checkbox">
+            <label id="button1" for="drawer-checkbox1">
+                <div>
+                    <img src="assets/images/weather.png">
+                </div>
+            </label>
+            <label id="drawer-close1" for="drawer-checkbox1"></label>
+            <div id="nav-content1">
+                <ul>
+                    <li><span>風速：</span><span class="windSpeed"></span><span>m/s</span></li>
+                    <li><span>風向：</span><span class="windDeg"></span></li>
+                    <li><span>気温：</span><span class="nowTemp"></span><span>度</span></li>
+                    <li><span>天候：</span><img class="dayWeatherIcon"></li>
+                </ul>
             </div>
-        </label>
-        <input id="drawer-checkbox2" type="checkbox">
-        <label id="button2" for="drawer-checkbox2" tabindex="0">
-            <div>
-                <img src="assets/images/balloon.png">
+        </div>
+        
+        
+        <div id="root">
+            <input id="drawer-checkbox2" type="checkbox">
+            <label id="button2" for="drawer-checkbox2">
+                <div>
+                    <img src="assets/images/root.png">
+                </div>
+            </label>
+            <label id="drawer-close2" for="drawer-checkbox2"></label>
+            <div id="nav-content2">
+                <ul>
+                    <li><span>経路</span></li>
+                </ul>
             </div>
-        </label>
-        <div id="nav-content1" tabindex="0">
-            <ul>
-                <li><span>風速：</span><span class="windSpeed"></span><span>m/s</span></li>
-                <li><span>風向：</span><span class="windDeg"></span></li>
-                <li><span>気温：</span><span class="nowTemp"></span><span>度</span></li>
-                <li><span>天候：</span><img class="dayWeatherIcon"></li>
-            </ul>
         </div>
-        <div id="nav-content2" tabindex="0">
-            <ul>
-                <li><span>経路</span></li>
-            </ul>
-        </div>
+        
+        
     </div>
 
     

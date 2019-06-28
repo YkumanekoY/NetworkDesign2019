@@ -26,7 +26,8 @@
 
     <input id="pac-input" class="controls" type="text" placeholder="Search Box">
     <div id="sample"></div>
-
+    <textarea name="gps" id="gps">
+    </textarea>
     <script type="text/javascript">
         function initMap() {
             if (navigator.geolocation) {
@@ -186,6 +187,34 @@
                         };
 
                         var marker = new google.maps.Marker(markerOptions);
+                        //線の描画に関する部分
+                        var polyOptions = {
+                            strokeColor: '#FF3333',
+                            strokeOpacity: 0.8,
+                            strokeWeight: 3
+                        }
+                        poly = new google.maps.Polyline(polyOptions);
+                        poly.setMap(map);
+                        var gpsStr = $("#gps").val();
+                        var gpsArry = gpsStr.split("\n");
+                        var len = 0;
+                        for (var i = 0; i < gpsArry.length; i++) {
+                            if ((typeof gpsArry[i] === "undefined") || (gpsArry[i] === "")) {
+                                break;
+                            } else {
+                                len++;
+                            }
+                        }
+                        path = poly.getPath();
+                        var bounds = new google.maps.LatLngBounds();
+                        var latLngArry = [];
+                        for (var i = 0; i < len; i++) {
+                            var wLatLng = new google.maps.LatLng(gpsArry[i].split(",")[0], gpsArry[i].split(",")[1]);
+                            path.push(wLatLng);
+                            bounds.extend(wLatLng);
+                            latLngArry[i] = wLatLng;
+                        }
+                        map.fitBounds(bounds);
                     }
                 );
             } else {
@@ -228,9 +257,9 @@
             </div>
         </div>
     </div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhp7uRLLhGeWb06tXM7YWo2UTZmNoTb1U&libraries=places&callback=initMap" async></script>
     <script src="../js/jquery-3.3.1.min.js"></script>
     <script src="../js/app.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhp7uRLLhGeWb06tXM7YWo2UTZmNoTb1U&libraries=places&callback=initMap" async></script>
 </body>
 
 </html>

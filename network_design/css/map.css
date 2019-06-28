@@ -5,11 +5,10 @@ html, body {
     font-family: 'Kosugi Maru', sans-serif;
 }
 
-
-
-strong {
-    font-weight: 600;
+* {
+  outline: none;
 }
+
 li {
     list-style: none;
 }
@@ -32,7 +31,7 @@ header {
     z-index: 20;
     height: 100vh;
     width: 100%;
-    pointer-events: auto;
+    pointer-events: none;
 }
 #nav-container .bg {
     position: absolute;
@@ -54,79 +53,65 @@ header {
 }
 
 
-.balloon {
+#balloon {
     position: relative;
     display: block;
-    z-index: 30;
+    justify-content: center;
+    z-index: 35;
     border: 0;
     background: #33536d;
     text-align: center;
     vertical-align: middle;
     height: 47px;
     width: 90px;
+    cursor: pointer;
+    pointer-events: auto;
 }
-.balloon img {
+#balloon img {
     vertical-align: middle;
     max-height: 27px;
     max-width: 70px;
     padding: 10px; 
 }
-.balloon a {
+#balloon a {
     position: absolute;
     z-index: 40;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
-    text-indent: -999px;
 }
-.ballon:hover {
+#ballon:hover {
     background: #7fa7b8;
 }
 
 
 
-.button1 {
+#drawer-checkbox1 {
+    display: none;
+}
+#button1 {
     position: relative;
-    display: flex;
-    flex-direction: column;
+    display: block;
     justify-content: center;
     z-index: 35;
-    -webkit-appearance: none;
     border: 0;
-    background: transparent;
-    border-radius: 0;
+    background: #33536d;
+    text-align: center;
+    vertical-align: middle;
     height: 47px;
-    width: 30px;
+    width: 90px;
     cursor: pointer;
     pointer-events: auto;
-    margin: 0px 30px;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
-.icon-bar1 {
-    display: block;
-    z-index: 40;
-    width: 100%;
-    height: 3px;
-    background: #aaa;
-    transition: .3s;
+#button1 img{
+    vertical-align: middle;
+    max-height: 27px;
+    max-width: 70px;
+    padding: 10px; 
 }
-.icon-bar1 + .icon-bar1 {
-    margin-top: 5px;
-}
-
-#nav-container:focus-within .button1 {
-    pointer-events: none;
-}
-#nav-container:focus-within .icon-bar1:nth-of-type(1) {
-    transform: translate3d(0,8px,0) rotate(45deg);
-}
-#nav-container:focus-within .icon-bar1:nth-of-type(2) {
-    opacity: 0;
-}
-#nav-container:focus-within .icon-bar1:nth-of-type(3) {
-    transform: translate3d(0,-8px,0) rotate(-45deg);
+#button1:hover {
+    background: #7fa7b8;
 }
 
 #nav-content1 {
@@ -171,11 +156,6 @@ header {
 }
 
 
-#nav-content1 li span:hover {
-    color: #BF7497;
-}
-
-
 #nav-container:focus-within #nav-content1 {
     transform: none;
 }
@@ -183,49 +163,33 @@ header {
 
 
 
-
-.button2 {
+#drawer-checkbox2 {
+    display: none;
+}
+#button2 {
     position: relative;
-    display: flex;
-    flex-direction: column;
+    display: block;
     justify-content: center;
     z-index: 35;
-    -webkit-appearance: none;
     border: 0;
-    background: transparent;
-    border-radius: 0;
+    background: #33536d;
+    text-align: center;
+    vertical-align: middle;
     height: 47px;
-    width: 30px;
+    width: 90px;
     cursor: pointer;
     pointer-events: auto;
-    margin: 0px 30px;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
-.icon-bar2 {
-    display: block;
-    z-index: 40;
-    width: 100%;
-    height: 3px;
-    background: #aaa;
-    transition: .3s;
+#button2 img{
+    vertical-align: middle;
+    max-height: 27px;
+    max-width: 70px;
+    padding: 10px; 
 }
-.icon-bar2 + .icon-bar2 {
-    margin-top: 5px;
+#button2:hover {
+    background: #7fa7b8;
 }
 
-#nav-container:focus-within .button2 {
-    pointer-events: none;
-}
-#nav-container:focus-within .icon-bar2:nth-of-type(1) {
-    transform: translate3d(0,8px,0) rotate(45deg);
-}
-#nav-container:focus-within .icon-bar2:nth-of-type(2) {
-    opacity: 0;
-}
-#nav-container:focus-within .icon-bar2:nth-of-type(3) {
-    transform: translate3d(0,-8px,0) rotate(-45deg);
-}
 
 #nav-content2 {
     margin-top: 47px;

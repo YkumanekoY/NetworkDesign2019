@@ -14,20 +14,24 @@
     <header tabindex="0"></header>
     <div id="nav-container">
         <div class="bg"></div>
-        <div class="balloon">
-            <img src="assets/images/balloon.png">
-            <a href="../index.html"> </a>
-        </div>
-        <div class="button1" tabindex="0">
-            <span class="icon-bar1"></span>
-            <span class="icon-bar1"></span>
-            <span class="icon-bar1"></span>
-        </div>
-        <div class="button2" tabindex="0">
-            <span class="icon-bar2"></span>
-            <span class="icon-bar2"></span>
-            <span class="icon-bar2"></span>
-        </div>
+        <label id="balloon">
+            <div>
+                <img src="assets/images/balloon.png">
+                <a href="../index.html"></a>
+            </div>        
+        </label>
+        <input id="drawer-checkbox1" type="checkbox">
+        <label id="button1" for="drawer-checkbox1" tabindex="0">
+            <div>
+                <img src="assets/images/balloon.png">
+            </div>
+        </label>
+        <input id="drawer-checkbox2" type="checkbox">
+        <label id="button2" for="drawer-checkbox2" tabindex="0">
+            <div>
+                <img src="assets/images/balloon.png">
+            </div>
+        </label>
         <div id="nav-content1" tabindex="0">
             <ul>
                 <li><span>風速：</span><span class="windSpeed"></span><span>m/s</span></li>

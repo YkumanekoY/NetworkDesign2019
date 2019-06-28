@@ -1,9 +1,14 @@
+@font-face {
+  font-family: 'MyFont1';
+  src: url("../fonts/corp_round_v1.ttf");
+}
+
 body{
   line-height: 2;
   background: #f7efed;
   text-align: center;
   margin: 20px auto;
-  font-family:'Yu Gothic',sans-serif;
+  font-family:'MyFont1',sans-serif;
   transition: all 1s;
 }
 
@@ -59,7 +64,7 @@ h1{
 
 div{
   margin-right: 0px;
-  letter-spacing: 10px;
+  letter-spacing: 5px;
   font-size:20px;
   color: #33546d
 }
@@ -72,6 +77,7 @@ main{
   width: 90%;
   text-align: right;
   margin: 0px auto;
+  margin-top: 200px auto;
 }
 
 .col3 {
@@ -86,6 +92,7 @@ button{
   margin: 20px auto;
   position: relative;
   display: inline-block;
+  font-family:'MyFont1',sans-serif;
   font-weight: bold;
   font-size:20px;
   padding: 20px 100px ;

@@ -147,15 +147,18 @@ header {
 }
 
 #nav-content1 li span {
-    padding: 10px 0px;
+    padding: 20px 0px;
     display: inline-flex;
     color: #f7efed;
     font-size: 15px;
+    text-align: center;
     text-transform: uppercase;
     transition: color .1s;
 }
 
 #nav-content1 li img {
+    padding: 10px;
+    max-height: 35px;
     vertical-align: middle;
     position: relative;
 }
@@ -248,6 +251,7 @@ header {
     display: inline-flex;
     color: #f7efed;
     font-size: 15px;
+    text-align: center;
     text-transform: uppercase;
     transition: color .1s;
 }

@@ -51,8 +51,10 @@ $(document).ready(function() {
                     }
 
                     //各データの表示
+                    $('.windSpeed').text(data.wind.speed);
+                    $('.windDeg').text(data.wind.deg + "°(" + getAzimuth(data.wind.deg) + ")");
                     $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);
-                    $('.dayWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + data.weather[0].icon + '.png ');
+                    $('.dayWeatherIcon').attr('src', '../html/assets/images/' + data.weather[0].icon + '.png ');
                 }
             });
         }

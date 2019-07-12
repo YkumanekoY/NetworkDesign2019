@@ -9,8 +9,12 @@ var lon = 0;
 
 $(document).ready(function() {
     dispLoading("処理中...")
-
-    setWeather();
+    $.getJSON("https://api.darksky.net/forecast/2e6791e5501a3354051c0bc31060a516/36.0658,139.5221?units=si&lang=ja&exclude=alerts,flags",
+        function(data) {
+            console.dir(data);
+        });
+    //setWeather();
+    removeLoading();
 });
 
 function setWeather() {
@@ -36,6 +40,7 @@ function setWeather() {
             const lat0 = positionData.latitude;
             const lon0 = positionData.longitude;
 
+
             //緯度経度の表示
             $('.location').text('現在の位置（' + Math.floor(lat0 * 100) / 100 + ',' + Math.floor(lon0 * 100) / 100 + ')');
 
@@ -45,36 +50,37 @@ function setWeather() {
             lonArray.push(lon0);
             lat = lat0;
             lon = lon0;
-            for (let alt = 2.0; alt < 11000; alt += speed * 10) {
-                var v2 = new Array();
-                $.ajax({
-                    type: 'GET',
-                    url: "https://api.openweathermap.org/data/2.5/weather",
-                    dataType: "jsonp",
-                    data: "lat=" + Math.round(lat * 10000) / 10000 + "&lon=" + Math.round(lon * 10000) / 10000 + "&appid=" + APIKEY,
-                    //天気データ呼び出し成功時の挙動
-                    success: function(data) {
-                        //console.log(count + " 緯度: " + lat + ", 経度:" + lon);
-                        //console.log("風向き：" + data.wind.deg + " 風速：" + data.wind.speed);
-                        v2 = vincenty(lat, lon, data.wind.deg, data.wind.speed * 10);
-                        lat = v2[0];
-                        lon = v2[1];
-                        console.log(data);
-                        console.log("city: " + data.name + ", lat:" + lat + ", lng:" + lon);
-                    },
-                    error: function() {
-                        return;
-                    }
-                }).done(function() {
-                    latArray.push(lat);
-                    lonArray.push(lon);
-                    console.log(lonArray.length);
-                    if (alt + speed * 10 > 11000) {
-                        removeLoading();
-                        initMap();
-                    }
-                });
-            }
+
+            // for (let alt = 2.0; alt < 11000; alt += speed * 10) {
+            //     var v2 = new Array();
+            //     $.ajax({
+            //         type: 'GET',
+            //         url: "https://api.openweathermap.org/data/2.5/weather",
+            //         dataType: "jsonp",
+            //         data: "lat=" + Math.round(lat * 10000) / 10000 + "&lon=" + Math.round(lon * 10000) / 10000 + "&appid=" + APIKEY,
+            //         //天気データ呼び出し成功時の挙動
+            //         success: function(data) {
+            //             //console.log(count + " 緯度: " + lat + ", 経度:" + lon);
+            //             //console.log("風向き：" + data.wind.deg + " 風速：" + data.wind.speed);
+            //             v2 = vincenty(lat, lon, data.wind.deg, data.wind.speed * 10);
+            //             lat = v2[0];
+            //             lon = v2[1];
+            //             console.log(data);
+            //             console.log("city: " + data.name + ", lat:" + lat + ", lng:" + lon);
+            //         },
+            //         error: function() {
+            //             return;
+            //         }
+            //     }).done(function() {
+            //         latArray.push(lat);
+            //         lonArray.push(lon);
+            //         console.log(lonArray.length);
+            //         if (alt + speed * 10 > 11000) {
+            //             removeLoading();
+            //             initMap();
+            //         }
+            //     });
+            // }
         }
 
         //現在位置の取得に失敗した場合

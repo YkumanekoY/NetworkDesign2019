@@ -51,15 +51,16 @@ function setWeather() {
                     type: 'GET',
                     url: "https://api.openweathermap.org/data/2.5/weather",
                     dataType: "jsonp",
-                    data: "lat=" + lat + "&lon=" + lon + "&appid=" + APIKEY,
+                    data: "lat=" + Math.round(lat * 10000) / 10000 + "&lon=" + Math.round(lon * 10000) / 10000 + "&appid=" + APIKEY,
                     //天気データ呼び出し成功時の挙動
                     success: function(data) {
                         //console.log(count + " 緯度: " + lat + ", 経度:" + lon);
                         //console.log("風向き：" + data.wind.deg + " 風速：" + data.wind.speed);
-                        v2 = vincenty(lat, lon, data.wind.deg, data.wind.speed * 30);
+                        v2 = vincenty(lat, lon, data.wind.deg, data.wind.speed * 10);
                         lat = v2[0];
                         lon = v2[1];
-                        console.log(alt + "city: " + data.name);
+                        console.log(data);
+                        console.log("city: " + data.name + ", lat:" + lat + ", lng:" + lon);
                     },
                     error: function() {
                         return;
@@ -67,7 +68,7 @@ function setWeather() {
                 }).done(function() {
                     latArray.push(lat);
                     lonArray.push(lon);
-                    //console.log(latArray);
+                    console.log(lonArray.length);
                     if (alt + speed * 10 > 11000) {
                         removeLoading();
                         initMap();

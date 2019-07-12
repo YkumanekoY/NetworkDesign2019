@@ -4,10 +4,15 @@ var lonArray = new Array();
 var lat = 0;
 var lon = 0;
 
+
 //天気情報---------------------------------------------------------------------------
 
 $(document).ready(
     $.when(function() {
+        // 処理前に Loading 画像を表示
+        dispLoading("処理中...");
+
+        // 非同期処理
         'use strict'
 
         const APIKEY = "f9afb324cd9adca6010dcb01b05fe097";
@@ -16,7 +21,6 @@ $(document).ready(
         const date = new Date();
         const nowHour = date.getHours();
 
-        //現在位置の取得ができるかどうか
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(success, error);
 
@@ -39,34 +43,37 @@ $(document).ready(
                 lon = lon0;
                 for (let alt = 2.0; alt < 11000; alt += speed * 10) {
                     var v2 = new Array();
-                    $.when(
-                        $.ajax({
-                            type: 'GET',
-                            url: "https://api.openweathermap.org/data/2.5/weather",
-                            dataType: "jsonp",
-                            data: "lat=" + lat + "&lon=" + lon + "&appid=" + APIKEY,
-                            //天気データ呼び出し成功時の挙動
-                            success: function(data) {
-                                //console.log(count + " 緯度: " + lat + ", 経度:" + lon);
-                                //console.log("風向き：" + data.wind.deg + " 風速：" + data.wind.speed);
-                                v2 = vincenty(lat, lon, data.wind.deg, data.wind.speed);
-                                lat = v2[0];
-                                lon = v2[1];
-                            },
-                            error: function() {
-                                return;
-                            }
-                        })
-                    ).done(function() {
+                    $.ajax({
+                        type: 'GET',
+                        url: "https://api.openweathermap.org/data/2.5/weather",
+                        dataType: "jsonp",
+                        data: "lat=" + lat + "&lon=" + lon + "&appid=" + APIKEY,
+                        //天気データ呼び出し成功時の挙動
+                        // success: function(data) {
+                        //     //console.log(count + " 緯度: " + lat + ", 経度:" + lon);
+                        //     //console.log("風向き：" + data.wind.deg + " 風速：" + data.wind.speed);
+                        //     v2 = vincenty(lat, lon, data.wind.deg, data.wind.speed);
+                        //     lat = v2[0];
+                        //     lon = v2[1];
+
+                        //     console.log(i);
+                        // },
+                        // error: function() {
+                        //     return;
+                        // }
+                    }).done(function(data) {
+                        v2 = vincenty(lat, lon, data.wind.deg, data.wind.speed);
+                        lat = v2[0];
+                        lon = v2[1];
+                        console.log(i);
+                    }).error(function() {
+                        alert("取得できませんでした");
+                        return lat = 0, lon = 0;
+                    }).always(function() {
                         latArray.push(lat);
                         lonArray.push(lon);
                         i = lonArray.length - 1;
-                        console(i);
-                        var addText = latArray[i] + ", " + lonArray[i] + '\n';
-                        // テキストボックスのデータを取得します
-                        var getData = String($("#gps").val());
-                        // 取得データと追記文言をくっつけて出力します
-                        $("#gps").val(getData + addText);
+                        console.log(i);
                     });
                 }
             }
@@ -86,56 +93,36 @@ $(document).ready(
 
             TokyoWeather();
         }
-
-        //東京の天気
-        function TokyoWeather() {
-
-            //現在の天気データ呼び出し
-            $.ajax({
-                url: "https://api.openweathermap.org/data/2.5/weather",
-                dataType: "jsonp",
-                data: "q=Tokyo,jp&appid=" + APIKEY,
-                //天気データ呼び出し成功時の挙動
-                success: function(data) {
-                    if (data.weather[0].main === "Sunny" || data.weather[0].main === "Clear") {
-                        $('body').css('background-image', 'url(Sunny.jpg)');
-                        $('.dayWeather').text("晴れ");
-                    } else if (data.weather[0].main === "Rain") {
-                        $('body').css('background-image', 'url(Rain.jpg)');
-                        $('.dayWeather').text("雨");
-                    } else if (data.weather[0].main === "Clouds") {
-                        $('body').css('background-image', 'url(Cloudy.jpg)');
-                        $('.dayWeather').text("くもり");
-                    } else if (data.weather[0].main === "Snow") {
-                        $('body').css('background-image', 'url(Snowy.jpg)');
-                        $('.dayWeather').text("雪");
-                    }
-
-                    //各データの表示
-                    $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);
-                    $('.dayWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + data.weather[0].icon + '.png ');
-                }
-            });
-        }
-
-        function sleep(waitMsec) {
-            var startMsec = new Date();
-
-            // 指定ミリ秒間だけループさせる（CPUは常にビジー状態）
-            while (new Date() - startMsec < waitMsec);
-        }
-    }).done(function() {
-            console.log(latArray.length);
-            console.log(lonArray.length);
-            console.log(lonArray);
-            for (var i = 0; i < latArray.length && i < lonArray.length; i++) {
-                $("#gps").val(latArray[i] + ", " + lonArray[i] + '\n');
-                console(i);
-            }
-        }
-
-    )
+    }).always(function() {
+        console.log(lonArray);
+        removeLoading();
+        initMap();
+    })
 );
+
+/* ------------------------------
+ Loading イメージ表示関数
+ 引数： msg 画面に表示する文言
+ ------------------------------ */
+function dispLoading(msg) {
+    // 引数なし（メッセージなし）を許容
+    if (msg == undefined) {
+        msg = "";
+    }
+    // 画面表示メッセージ
+    var dispMsg = "<div class='loadingMsg'>" + msg + "</div>";
+    // ローディング画像が表示されていない場合のみ出力
+    if ($("#loading").length == 0) {
+        $("body").append("<div id='loading'>" + dispMsg + "</div>");
+    }
+}
+
+/* ------------------------------
+ Loading イメージ削除関数
+ ------------------------------ */
+function removeLoading() {
+    $("#loading").remove();
+}
 
 //---------------------------------------------------------------------------
 
@@ -212,3 +199,167 @@ function vincenty(lat1, lng1, alpha12, length) {
 }
 
 //地図関係
+function initMap() {
+    if (navigator.geolocation) {
+        // 現在地を取得
+        navigator.geolocation.getCurrentPosition(
+            // 取得成功した場合
+            function(position) {
+                // 緯度・経度を変数に格納
+                var mapLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                var mapArea = document.getElementById('sample');
+                var mapOptions = {
+                    disableDefaultUI: true,
+                    center: mapLatLng,
+                    zoom: 15,
+                    styles: [ /*マップの見た目*/ {
+                        "featureType": "all",
+                        "elementType": "labels.text.fill",
+                        "stylers": [{
+                            "color": "#ffffff"
+                        }]
+                    }, {
+                        "featureType": "all",
+                        "elementType": "labels.text.stroke",
+                        "stylers": [{
+                            "color": "#A28E8B"
+                        }]
+                    }, {
+                        "featureType": "all",
+                        "elementType": "labels.icon",
+                        "stylers": [{
+                            "visibility": "off"
+                        }]
+                    }, {
+                        "featureType": "administrative",
+                        "elementType": "geometry.fill",
+                        "stylers": [{
+                            "color": "#F7EFED"
+                        }]
+                    }, {
+                        "featureType": "administrative",
+                        "elementType": "geometry.stroke",
+                        "stylers": [{
+                            "color": "#F7EFED"
+                        }, {
+                            "weight": 1.2
+                        }]
+                    }, {
+                        "featureType": "administrative.locality",
+                        "elementType": "geometry.fill",
+                        "stylers": [{
+                            "lightness": "-1"
+                        }]
+                    }, {
+                        "featureType": "administrative.neighborhood",
+                        "elementType": "labels.text.fill",
+                        "stylers": [{
+                            "lightness": "0"
+                        }, {
+                            "saturation": "0"
+                        }]
+                    }, {
+                        "featureType": "administrative.neighborhood",
+                        "elementType": "labels.text.stroke",
+                        "stylers": [{
+                            "weight": "0.01"
+                        }]
+                    }, {
+                        "featureType": "administrative.land_parcel",
+                        "elementType": "labels.text.stroke",
+                        "stylers": [{
+                            "weight": "0.01"
+                        }]
+                    }, {
+                        "featureType": "landscape",
+                        "elementType": "geometry",
+                        "stylers": [{
+                            "color": "#F7EFED"
+                        }]
+                    }, {
+                        "featureType": "poi",
+                        "elementType": "geometry",
+                        "stylers": [{
+                            "color": "#C4B4B3"
+                        }]
+                    }, {
+                        "featureType": "poi.park",
+                        "elementType": "labels.icon",
+                        "stylers": [{
+                            visibility: "simplified"
+                        }, ],
+                    }, {
+                        "featureType": "poi.park",
+                        "elementType": "labels.icon",
+                        "stylers": [{
+                            "color": "#C4B4B3"
+                        }]
+                    }, {
+                        "featureType": "road",
+                        "elementType": "geometry.stroke",
+                        "stylers": [{
+                            "visibility": "off"
+                        }]
+                    }, {
+                        "featureType": "road.highway",
+                        "elementType": "geometry.fill",
+                        "stylers": [{
+                            "color": "#C4B4B3"
+                        }]
+                    }, {
+                        "featureType": "road.highway.controlled_access",
+                        "elementType": "geometry.stroke",
+                        "stylers": [{
+                            "color": "#C4B4B3"
+                        }]
+                    }, {
+                        "featureType": "road.arterial",
+                        "elementType": "geometry",
+                        "stylers": [{
+                            "color": "#C4B4B3"
+                        }]
+                    }, {
+                        "featureType": "road.local",
+                        "elementType": "geometry",
+                        "stylers": [{
+                            "color": "#C4B4B3"
+                        }]
+                    }, {
+                        "featureType": "transit",
+                        "elementType": "geometry",
+                        "stylers": [{
+                            "color": "#A28E8B"
+                        }]
+                    }, {
+                        "featureType": "water",
+                        "elementType": "geometry",
+                        "stylers": [{
+                            "color": "#61D4E2"
+                        }]
+                    }]
+                };
+
+                var map = new google.maps.Map(mapArea, mapOptions);
+                var input = document.getElementById('pac-input');
+                var searchBox = new google.maps.places.SearchBox(input);
+                map.controls[google.maps.ControlPosition.TOP_RIGHT].push(input);
+
+                map.addListener('bounds_changed', function() {
+                    searchBox.setBounds(map.getBounds());
+                });
+
+                var markerOptions = {
+                    map: map,
+                    position: mapLatLng,
+                    icon: new google.maps.MarkerImage(
+                        'assets/images/balloon.png',
+                    ),
+                };
+
+                var marker = new google.maps.Marker(markerOptions);
+            }
+        );
+    } else {
+        alert("この端末では位置情報が取得できません");
+    }
+}

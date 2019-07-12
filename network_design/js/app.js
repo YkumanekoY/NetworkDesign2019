@@ -1,3 +1,4 @@
+
 //緯度 経度 配列
 var latArray = new Array();
 var lonArray = new Array();
@@ -15,6 +16,7 @@ $(document).ready(
         // 非同期処理
         'use strict'
 
+<<<<<<< HEAD
         const APIKEY = "f9afb324cd9adca6010dcb01b05fe097";
 
         //今日のデータを取り出す
@@ -76,6 +78,51 @@ $(document).ready(
                         console.log(i);
                     });
                 }
+=======
+    //現在位置の取得ができるかどうか
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error);
+
+        // 現在位置の取得に成功した場合
+        function success(position) {
+            const positionData = position.coords;
+
+            //最初の位置の緯度経度取得
+            const lat0 = positionData.latitude;
+            const lon0 = positionData.longitude;
+
+            //緯度経度の表示
+            $('.location').text('現在の位置（' + Math.floor(lat0 * 100) / 100 + ',' + Math.floor(lon0 * 100) / 100 + ')');
+
+            //高度限界まで風船を飛ばすぜ　altは高度
+            var speed = 4.0;
+            latArray.push(lat0);
+            lonArray.push(lon0);
+            var count = 0;
+            for (let alt = 2.0; alt < 11000; alt += speed * 10) {
+                $.ajax({
+                    type: 'GET',
+                    url: "https://api.openweathermap.org/data/2.5/weather",
+                    dataType: "jsonp",
+                    data: "lat=" + latArray[count] + "&lon=" + lonArray[count] + "&appid=" + APIKEY,
+                    //天気データ呼び出し成功時の挙動
+                    success: function(data) {
+                        latArray.push(
+                            vincenty(latArray[count], lonArray[count], data.wind.deg, data.wind.speed)[0]
+                        );
+                        lonArray.push(
+                            vincenty(latArray[count], lonArray[count], data.wind.deg, data.wind.speed)[1]
+                        );
+                    },
+                    error: function() {
+                        alert("ファイルを読み込めませんでした。");
+                        break;
+                    },
+                    complete: function() {}
+                });
+                console.log("緯度: " + latlonArray[count][0] + ", 経度:" + latlonArray[count][1]);
+                count++;
+>>>>>>> parent of 4b83751... Update app.js
             }
 
             //現在位置の取得に失敗した場合
@@ -197,6 +244,7 @@ function vincenty(lat1, lng1, alpha12, length) {
     //console.log(radDo(Math.atan(x / y)) + ", " + radDo(lng1 + omega))
     return [radDo(Math.atan(x / y)), radDo(lng1 + omega)];
 }
+<<<<<<< HEAD
 
 //地図関係
 function initMap() {
@@ -363,3 +411,5 @@ function initMap() {
         alert("この端末では位置情報が取得できません");
     }
 }
+=======
+>>>>>>> parent of 4b83751... Update app.js

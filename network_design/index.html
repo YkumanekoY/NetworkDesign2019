@@ -7,19 +7,13 @@
     <title>Top page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="./css/top.css" />
+    <link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
     <script language="javascript">
-      var ch　= balloon3.png; // オブジェクトの番号 (番号.jpg　が表示される)
-      function disp()
-      {
-        ch=(ch+1)% 9 ;
-        stnm= ch + "balloon4.png" ; //　マウスクリックで画像ファイル名を変更　：　stnmに（番号.jpg）を代入
 
-        document.images["s"].src = stnm ; // name="s"の　img タグのファイルをstnmにする
-      }
     </script>
 
-<body>
+<body class = "fadeout">
 
   <div id = "bodyfadeout">
     <header>
@@ -65,7 +59,7 @@
       </div>
     <footer>
       <div class = "footer">
-        <button id = "btn1" >
+        <button id = "btn1">
           風船を飛ばしてみる
         </button>
         <br>

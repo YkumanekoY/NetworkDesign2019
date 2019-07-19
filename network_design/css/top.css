@@ -34,7 +34,7 @@ body::after {
 
 body.fadeout::after {
   opacity: 1;
-} 
+}
 
 /*.bodyfadeout {
     opacity: 0;
@@ -63,7 +63,7 @@ main{
 }
 
 .images{
-  width: 90%;
+  width: 100%;
   text-align: right;
   margin: 0px auto;
   margin-top: 200px auto;
@@ -96,7 +96,7 @@ button:hover {
   background: #f1485b;
 }
 
-onclick{
+/*onclick{
     animation: fadeIn 2s ease 0s 1 normal;
     -webkit-animation: fadeIn 2s ease 0s 1 normal;
 }
@@ -109,7 +109,7 @@ onclick{
 @-webkit-keyframes fade0ut {
     100% {opacity: 1}
     0% {opacity: 0}
-}
+}*/
 
 .footer{
   color: #33546d;

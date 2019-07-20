@@ -1,10 +1,18 @@
+header{
+  background: #61d4e2;
+}
 
+h1{
+  margin: 20px auto;
+  font-size:50px;
+  color: #f7efed
+}
 
 body{
   line-height: 2;
   background: #f7efed;
   text-align: center;
-  margin: 20px auto;
+  margin: 0px auto;
   font-family: 'Kosugi Maru', sans-serif;
   transition: all 1s;
 }
@@ -45,12 +53,6 @@ body.fadeout::after {
     opacity: 1;
 }*/
 
-h1{
-  margin: 20px auto;
-  font-size:50px;
-  color: #61d4e2
-}
-
 div{
   margin-right: 0px;
   letter-spacing: 0px;
@@ -58,15 +60,22 @@ div{
   color: #33546d
 }
 
-main{
-  margin-top: 20px auto;
-}
-
-.images{
+.image{
   width: 100%;
-  text-align: right;
-  margin: 0px auto;
-  margin-top: 200px auto;
+  text-align: left;
+  /*margin-top: 200px auto;*/
+  position: relative;
+}
+.image0{
+  width: 100%;
+  position: absolute;
+  /*margin-top: 200px auto;*/
+}
+.image1{
+  width: 100%;
+  display: none;
+  position: absolute;
+  /*margin-top: 200px auto;*/
 }
 
 .col3 {
@@ -75,7 +84,14 @@ main{
 
 .col3 div {
   width: calc(100% / 3);
+  height: 500px;
+  background: #f7efed
+
 }
+
+/*.description{
+  margin-top: 30px;
+}*/
 
 button{
   margin: 20px auto;
@@ -111,9 +127,9 @@ button:hover {
     0% {opacity: 0}
 }*/
 
-.footer{
+/*.footer{
   color: #33546d;
-}
+}*/
 
 .copyright{
   font-size:20px;

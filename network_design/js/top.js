@@ -57,10 +57,22 @@ $(window).on('load', function(){
 
 $('#btn1').click(function(){
   console.log("fo");
-  $('#bodyfadeout').fadeOut("slow");
-  setTimeout(function(){
-    window.location = "./html/map.html";  // 0.8秒後に取得したURLに遷移
-  }, 800);
+
+  $('.image0').fadeOut("slow");
+  $('.image1').fadeIn("slow");
+  pagechange();
+
+  function pagechange(){
+    $('#bodyfadeout').fadeOut("slow", function(){
+      window.location = "./html/map.html";
+    });
+  }
+  // $('#bodyfadeout').fadeOut("slow", function(){
+  //   window.location = "./html/map.html";
+  // });
+  // setTimeout(function(){
+  //   window.location = "./html/map.html";  // 0.8秒後に取得したURLに遷移
+  // }, 800);
 });
 
 /*$(function() {

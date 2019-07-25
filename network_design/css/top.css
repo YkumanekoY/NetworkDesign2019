@@ -1,11 +1,12 @@
-header{
+/* header{
   background: #61d4e2;
-}
+} */
 
 h1{
   margin: 20px auto;
   font-size:50px;
-  color: #f7efed
+  letter-spacing: 5px;
+  color: #61d4e2
 }
 
 body{
@@ -84,7 +85,7 @@ div{
 
 .col3 div {
   width: calc(100% / 3);
-  height: 500px;
+  height: 700px;
   background: #f7efed
 
 }

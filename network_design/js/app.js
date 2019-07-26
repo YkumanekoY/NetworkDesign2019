@@ -8,7 +8,7 @@ var lon = 0;
 //天気情報---------------------------------------------------------------------------
 
 $(document).ready(function() {
-    dispLoading("処理中...")
+    dispLoading("飛行中...")
 
     setWeather();
 });
@@ -45,41 +45,54 @@ function setWeather() {
             lonArray.push(lon0);
             lat = lat0;
             lon = lon0;
-            for (let alt = 2.0; alt < 11000; alt += speed * 10) {
-                var v2 = new Array();
-                $.ajax({
-                    type: 'GET',
-                    url: "https://api.openweathermap.org/data/2.5/weather",
-                    dataType: "jsonp",
-                    data: "lat=" + Math.round(lat * 10000) / 10000 + "&lon=" + Math.round(lon * 10000) / 10000 + "&appid=" + APIKEY,
-                    //天気データ呼び出し成功時の挙動
-                    success: function(data) {
-                        //console.log(count + " 緯度: " + lat + ", 経度:" + lon);
-                        //console.log("風向き：" + data.wind.deg + " 風速：" + data.wind.speed);
-                        v2 = vincenty(lat, lon, data.wind.deg, data.wind.speed * 10);
-                        lat = v2[0];
-                        lon = v2[1];
-                        console.log(data);
-                        console.log("city: " + data.name + ", lat:" + lat + ", lng:" + lon);
-                    },
-                    error: function() {
-                        return;
-                    }
-                }).done(function() {
-                    latArray.push(lat);
-                    lonArray.push(lon);
-                    console.log(lonArray.length);
-                    if (alt + speed * 10 > 11000) {
-                        removeLoading();
-                        initMap();
-                    }
-                });
-            }
+
+            $(function($) {
+                for (let alt = 2.0; alt < 11000; alt += speed * 10) {
+                    var forCount = alt;
+                    (function(alt) {
+                        var v2 = new Array();
+                        $.ajax({
+                            type: 'GET',
+                            url: "https://api.openweathermap.org/data/2.5/weather",
+                            dataType: "jsonp",
+                            data: "lat=" + Math.round(lat * 10000) / 10000 + "&lon=" + Math.round(lon * 10000) / 10000 + "&appid=" + APIKEY,
+                            //天気データ呼び出し成功時の挙動
+                            success: function(data) {
+                                //console.log(count + " 緯度: " + lat + ", 経度:" + lon);
+                                //console.log("風向き：" + data.wind.deg + " 風速：" + data.wind.speed);
+
+                                $('.windSpeed').text(data.wind.speed);
+                                $('.windDeg').text(data.wind.deg);
+                                $('.nowTemp').text(data.main.temp);
+                                $('.dayWeatherIcon').text(data.main);
+
+                                v2 = vincenty(lat, lon, data.wind.deg, data.wind.speed * 10);
+                                lat = v2[0];
+                                lon = v2[1];
+                                console.log(data);
+                                console.log("city: " + data.name + ", lat:" + lat + ", lng:" + lon);
+                            },
+                            error: function() {
+                                return;
+                            }
+                        }).done(function() {
+                            latArray.push(lat);
+                            lonArray.push(lon);
+                            console.log(lonArray.length);
+                            if (alt + speed * 10 > 11000) {
+                                removeLoading();
+                                initMap();
+                            }
+                        });
+                    })(forCount);
+                }
+            });
+
         }
 
         //現在位置の取得に失敗した場合
         function error(error) {
-            alert("位置情報が取得できなかったため、東京の天気を表示します");
+            alert("位置情報が取得できなかったため、東京から風船を飛ばします。");
             $('.location').text('東京');
 
             TokyoWeather();
@@ -87,7 +100,7 @@ function setWeather() {
         }
         //現在位置がそもそも取得できない場合
     } else {
-        alert("位置情報が取得できなかったため、東京の天気を表示します");
+        alert("位置情報が取得できなかったため、東京から風船を飛ばします。");
         $('.location').text('東京');
 
         TokyoWeather();

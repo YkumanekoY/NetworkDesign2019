@@ -58,19 +58,31 @@ function setWeather() {
                             data: "lat=" + Math.round(lat * 10000) / 10000 + "&lon=" + Math.round(lon * 10000) / 10000 + "&appid=" + APIKEY,
                             //天気データ呼び出し成功時の挙動
                             success: function(data) {
-                                //console.log(count + " 緯度: " + lat + ", 経度:" + lon);
-                                //console.log("風向き：" + data.wind.deg + " 風速：" + data.wind.speed);
-
-                                $('.windSpeed').text(data.wind.speed);
-                                $('.windDeg').text(data.wind.deg);
-                                $('.nowTemp').text(data.main.temp);
-                                $('.dayWeatherIcon').text(data.main);
-
                                 v2 = vincenty(lat, lon, data.wind.deg, data.wind.speed * 10);
                                 lat = v2[0];
                                 lon = v2[1];
                                 console.log(data);
                                 console.log("city: " + data.name + ", lat:" + lat + ", lng:" + lon);
+
+                                if (data.weather[0].main === "Sunny" || data.weather[0].main === "Clear") {
+                                    $('body').css('background-image', 'url(Sunny.jpg)');
+                                    $('.dayWeather').text("晴れ");
+                                } else if (data.weather[0].main === "Rain") {
+                                    $('body').css('background-image', 'url(Rain.jpg)');
+                                    $('.dayWeather').text("雨");
+                                } else if (data.weather[0].main === "Clouds") {
+                                    $('body').css('background-image', 'url(Cloudy.jpg)');
+                                    $('.dayWeather').text("くもり");
+                                } else if (data.weather[0].main === "Snow") {
+                                    $('body').css('background-image', 'url(Snowy.jpg)');
+                                    $('.dayWeather').text("雪");
+                                }
+
+                                //各データの表示
+                                $('.windSpeed').text(data.wind.speed);
+                                $('.windDeg').text(data.wind.deg + "°(" + getAzimuth(data.wind.deg) + ")");
+                                $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);
+                                $('.dayWeatherIcon').attr('src', '../html/assets/images/' + data.weather[0].icon + '.png ');
                             },
                             error: function() {
                                 return;
@@ -96,7 +108,6 @@ function setWeather() {
             $('.location').text('東京');
 
             TokyoWeather();
-
         }
         //現在位置がそもそも取得できない場合
     } else {
@@ -104,6 +115,37 @@ function setWeather() {
         $('.location').text('東京');
 
         TokyoWeather();
+    }
+
+    //東京の天気
+    function TokyoWeather() {
+
+        //現在の天気データ呼び出し
+        $.ajax({
+            url: "https://api.openweathermap.org/data/2.5/weather",
+            dataType: "jsonp",
+            data: "q=Tokyo,jp&appid=" + APIKEY,
+            //天気データ呼び出し成功時の挙動
+            success: function(data) {
+                if (data.weather[0].main === "Sunny" || data.weather[0].main === "Clear") {
+                    $('body').css('background-image', 'url(Sunny.jpg)');
+                    $('.dayWeather').text("晴れ");
+                } else if (data.weather[0].main === "Rain") {
+                    $('body').css('background-image', 'url(Rain.jpg)');
+                    $('.dayWeather').text("雨");
+                } else if (data.weather[0].main === "Clouds") {
+                    $('body').css('background-image', 'url(Cloudy.jpg)');
+                    $('.dayWeather').text("くもり");
+                } else if (data.weather[0].main === "Snow") {
+                    $('body').css('background-image', 'url(Snowy.jpg)');
+                    $('.dayWeather').text("雪");
+                }
+
+                //各データの表示
+                $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);
+                $('.dayWeatherIcon').attr('src', 'https://openweathermap.org/img/w/' + data.weather[0].icon + '.png ');
+            }
+        });
     }
 }
 

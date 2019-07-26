@@ -6,25 +6,75 @@
     <meta charset="utf-8" />
     <title>Top page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="./css/main.css" />
-</head>
+    <link rel="stylesheet" href="./css/top.css" />
+    <link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-<body>
+<!--    <script language="javascript">
+
+    </script>-->
+
+<body class = "fadeout">
+
+  <div id = "bodyfadeout">
     <header>
-        <h1>top page</h1>
+        <h1><img src = "./images/logo.png" class = "image2"></h1>
     </header>
-    <main>
-        <div>
-            <a href="./html/weather.html">お天気のテストページ</a>
-        </div>
-        <div>
-            <a href="./html/map.html">地図のテストページ</a>
-        </div>
-    </main>
-    <footer>
-        ここはまだまだ仮やで！
-    </footer>
 
+    <div class = "main">
+      <div class="col3">
+        <div></div>
+        <div class = "description">
+              「あっ」
+              <br>
+              不意に放たれた風船は空にのぼってゆきます
+              <br>
+              あの風船はどこまで飛んで行ってしまうのでしょう
+              <br>
+              <br>
+              確かめる方法は　簡単
+              <br>
+              下のボタンを押すだけ
+              <br>
+              <br>
+              下のボタンを押すと
+              <br>
+              <font color = "7fa7b8">Geolocation API</font>により
+              <br>
+              あなたの今いる場所を取得し
+              <br>
+              <font color = "7fa7b8">OpenWeatherMap API</font>により
+              <br>
+              得られた天気情報をもとに
+              <br>
+              風船がどこまで飛んでいくのかを
+              <br>
+              示してくれます
+              <br>
+              <br>
+              とりあえず
+              ここからポチッと
+              <br>
+              あなたの風船を飛ばしてみましょう
+          </div>
+          <div class = "image">
+            <img src = "./images/balloon3.png" class = "image0">
+            <img src = "./images/balloon4.png" class = "image1">
+          </div>
+      </div>
+    </div>
+
+      <div class = "footer">
+        <button id="btn1">
+          風船を飛ばしてみる
+        </button>
+        <br>
+        <div class = "copyright">
+          ネットワーク実習A F班
+        </div>
+      </div>
+
+    <script src = "./js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="./js/top.js"></script>
 </body>
 
 </html>

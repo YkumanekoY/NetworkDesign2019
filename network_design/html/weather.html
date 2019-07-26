@@ -1,47 +1,265 @@
-<!DOCTYPE html>
-
+<!DOCTYPE HTML>
 <html lang="ja" xmlns="https://www.w3.org/1999/xhtml">
 
 <head>
-    <meta charset="utf-8" />
-    <title>現在地の天気</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="../css/main.css" />
+    <link href="../css/map.css" rel="stylesheet" type="text/css">
+
+    <title>テスト</title>
+    <style>
+        #sample {
+            width: auto;
+            height: 800px;
+        }
+    </style>
 </head>
 
 <body>
-    <header>
-        <span class="location"></span><span>の天気</span>
-    </header>
-    <main>
-        <div class="weatherMain">
-            <div class="day">
-                <div>
-                    <div>
-                        <span>現在地の風</span>
-                    </div>
-                    <div>
-                        <span>風速：</span><span class="windSpeed"></span><span>m/s</span>
-                    </div>
-                    <div>
-                        <span>風向：</span><span class="windDeg"></span>
-                    </div>
-                    <div>
-                        <img class="dayWeatherIcon">
-                    </div>
-                    <div>
-                        <span>気温：</span><span class="nowTemp"></span><span>度</span>
-                    </div>
-                </div>
+    <div>
+        <ul class="global">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#weather">気象</a></li>
+            <li><a href="#root">経路</a></li>
+        </ul>
+    </div>
+
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    <div id="sample"></div>
+    <textarea name="gps" id="gps">
+    </textarea>
+    <script type="text/javascript">
+        function initMap() {
+            if (navigator.geolocation) {
+                // 現在地を取得
+                navigator.geolocation.getCurrentPosition(
+                    // 取得成功した場合
+                    function(position) {
+                        // 緯度・経度を変数に格納
+                        var mapLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                        var mapArea = document.getElementById('sample');
+                        var mapOptions = {
+                            disableDefaultUI: true,
+                            center: mapLatLng,
+                            zoom: 15,
+                            styles: [ /*マップの見た目*/ {
+                                "featureType": "all",
+                                "elementType": "labels.text.fill",
+                                "stylers": [{
+                                    "color": "#ffffff"
+                                }]
+                            }, {
+                                "featureType": "all",
+                                "elementType": "labels.text.stroke",
+                                "stylers": [{
+                                    "color": "#A28E8B"
+                                }]
+                            }, {
+                                "featureType": "all",
+                                "elementType": "labels.icon",
+                                "stylers": [{
+                                    "visibility": "off"
+                                }]
+                            }, {
+                                "featureType": "administrative",
+                                "elementType": "geometry.fill",
+                                "stylers": [{
+                                    "color": "#F7EFED"
+                                }]
+                            }, {
+                                "featureType": "administrative",
+                                "elementType": "geometry.stroke",
+                                "stylers": [{
+                                    "color": "#F7EFED"
+                                }, {
+                                    "weight": 1.2
+                                }]
+                            }, {
+                                "featureType": "administrative.locality",
+                                "elementType": "geometry.fill",
+                                "stylers": [{
+                                    "lightness": "-1"
+                                }]
+                            }, {
+                                "featureType": "administrative.neighborhood",
+                                "elementType": "labels.text.fill",
+                                "stylers": [{
+                                    "lightness": "0"
+                                }, {
+                                    "saturation": "0"
+                                }]
+                            }, {
+                                "featureType": "administrative.neighborhood",
+                                "elementType": "labels.text.stroke",
+                                "stylers": [{
+                                    "weight": "0.01"
+                                }]
+                            }, {
+                                "featureType": "administrative.land_parcel",
+                                "elementType": "labels.text.stroke",
+                                "stylers": [{
+                                    "weight": "0.01"
+                                }]
+                            }, {
+                                "featureType": "landscape",
+                                "elementType": "geometry",
+                                "stylers": [{
+                                    "color": "#F7EFED"
+                                }]
+                            }, {
+                                "featureType": "poi",
+                                "elementType": "geometry",
+                                "stylers": [{
+                                    "color": "#C4B4B3"
+                                }]
+                            }, {
+                                "featureType": "poi.park",
+                                "elementType": "labels.icon",
+                                "stylers": [{
+                                    visibility: "simplified"
+                                }, ],
+                            }, {
+                                "featureType": "poi.park",
+                                "elementType": "labels.icon",
+                                "stylers": [{
+                                    "color": "#C4B4B3"
+                                }]
+                            }, {
+                                "featureType": "road",
+                                "elementType": "geometry.stroke",
+                                "stylers": [{
+                                    "visibility": "off"
+                                }]
+                            }, {
+                                "featureType": "road.highway",
+                                "elementType": "geometry.fill",
+                                "stylers": [{
+                                    "color": "#C4B4B3"
+                                }]
+                            }, {
+                                "featureType": "road.highway.controlled_access",
+                                "elementType": "geometry.stroke",
+                                "stylers": [{
+                                    "color": "#C4B4B3"
+                                }]
+                            }, {
+                                "featureType": "road.arterial",
+                                "elementType": "geometry",
+                                "stylers": [{
+                                    "color": "#C4B4B3"
+                                }]
+                            }, {
+                                "featureType": "road.local",
+                                "elementType": "geometry",
+                                "stylers": [{
+                                    "color": "#C4B4B3"
+                                }]
+                            }, {
+                                "featureType": "transit",
+                                "elementType": "geometry",
+                                "stylers": [{
+                                    "color": "#A28E8B"
+                                }]
+                            }, {
+                                "featureType": "water",
+                                "elementType": "geometry",
+                                "stylers": [{
+                                    "color": "#61D4E2"
+                                }]
+                            }]
+                        };
+
+                        var map = new google.maps.Map(mapArea, mapOptions);
+                        var input = document.getElementById('pac-input');
+                        var searchBox = new google.maps.places.SearchBox(input);
+                        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(input);
+
+                        map.addListener('bounds_changed', function() {
+                            searchBox.setBounds(map.getBounds());
+                        });
+
+                        var markerOptions = {
+                            map: map,
+                            position: mapLatLng,
+                            icon: new google.maps.MarkerImage(
+                                'assets/images/balloon.png',
+                            ),
+                        };
+
+                        var marker = new google.maps.Marker(markerOptions);
+                        //線の描画に関する部分
+                        var polyOptions = {
+                            strokeColor: '#FF3333',
+                            strokeOpacity: 0.8,
+                            strokeWeight: 3
+                        }
+                        poly = new google.maps.Polyline(polyOptions);
+                        poly.setMap(map);
+                        var gpsStr = $("#gps").val();
+                        var gpsArry = gpsStr.split("\n");
+                        var len = 0;
+                        for (var i = 0; i < gpsArry.length; i++) {
+                            if ((typeof gpsArry[i] === "undefined") || (gpsArry[i] === "")) {
+                                break;
+                            } else {
+                                len++;
+                            }
+                        }
+                        path = poly.getPath();
+                        var bounds = new google.maps.LatLngBounds();
+                        var latLngArry = [];
+                        for (var i = 0; i < len; i++) {
+                            var wLatLng = new google.maps.LatLng(gpsArry[i].split(",")[0], gpsArry[i].split(",")[1]);
+                            path.push(wLatLng);
+                            bounds.extend(wLatLng);
+                            latLngArry[i] = wLatLng;
+                        }
+                        map.fitBounds(bounds);
+                    }
+                );
+            } else {
+                alert("この端末では位置情報が取得できません");
+            }
+        }
+    </script>
+
+
+
+    <div class="cp_cont">
+        <div class="cp_offcm_w">
+            <input type="checkbox" id="cp_toggle_w">
+            <label for="cp_toggle_w">
+                    <label for="cp_toggle_r">
+                        <a href="#weather"></a>
+                    </label>
+            </label>
+            <div class="cp_menu">
+                <ul1>
+                    <li><span>風速：</span><span class="windSpeed"></span><span>m/s</span></li>
+                    <li><span>風向：</span><span class="windDeg"></span></li>
+                    <li><span>気温：</span><span class="nowTemp"></span><span>度</span></li>
+                    <li><span>天候：</span><img class="dayWeatherIcon"></li>
+                </ul1>
             </div>
         </div>
-    </main>
-    <footer>
-        *天気予報情報は<a href="http://openweathermap.org/">OpenWeatherMap</a>のものを利用しております。当サイトでは結果について責任を負いません。
-    </footer>
 
+
+        <div class="cp_offcm_r">
+            <input type="checkbox" id="cp_toggle_r">
+            <label for="cp_toggle_r">
+                <a href="#root"></a>
+            </label>
+            <div class="cp_menu">
+                <ul1>
+                    <li><a href="#">経路</a></li>
+
+                </ul1>
+            </div>
+        </div>
+    </div>
     <script src="../js/jquery-3.3.1.min.js"></script>
     <script src="../js/app.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhp7uRLLhGeWb06tXM7YWo2UTZmNoTb1U&libraries=places&callback=initMap" async></script>
 </body>
 
 </html>

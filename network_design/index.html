@@ -7,68 +7,64 @@
     <title>Top page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="./css/top.css" />
+    <link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" rel="stylesheet">
 
-    <script language="javascript">
-      var ch　= balloon3.png; // オブジェクトの番号 (番号.jpg　が表示される)
-      function disp()
-      {
-        ch=(ch+1)% 9 ;
-        stnm= ch + "balloon4.png" ; //　マウスクリックで画像ファイル名を変更　：　stnmに（番号.jpg）を代入
+<!--    <script language="javascript">
 
-        document.images["s"].src = stnm ; // name="s"の　img タグのファイルをstnmにする
-      }
-    </script>
-</head>
+    </script>-->
 
-<body>
+<body class = "fadeout">
 
   <div id = "bodyfadeout">
     <header>
-        <h1>風船を飛ばしてみよう</h1>
+        <h1><img src = "./images/logo.png" class = "image2"></h1>
     </header>
 
-    <main>
+    <div class = "main">
       <div class="col3">
         <div></div>
         <div class = "description">
-              本来はここにサイトの説明文が入ります。
+              「あっ」
               <br>
-              (どういうAPIを使い、どういうサイトなのか)
+              不意に放たれた風船は空にのぼってゆきます
               <br>
-              文章は最終発表までに考えるので、
-              <br>
-              今回は進捗をここに報告します。
+              あの風船はどこまで飛んで行ってしまうのでしょう
               <br>
               <br>
-              今回までの進捗
+              確かめる方法は　簡単
               <br>
-              ①フォントを読み込む
-              <br>
-              ②ページを更新するときにフェードインさせる
-              <br>
-              ③ボタンリンクを押すとフェードアウトさせる
+              下のボタンを押すだけ
               <br>
               <br>
-              最終発表までにやらなきゃいけないことは、
+              下のボタンを押すと
               <br>
-              ①ボタンリンクをクリックすると画像が変わる
+              <font color = "7fa7b8">Geolocation API</font>により
               <br>
-              ②地図のページと繋げてフェードインさせる
+              あなたの今いる場所を取得し
               <br>
-              ③文章を考える
+              <font color = "7fa7b8">OpenWeatherMap API</font>により
+              <br>
+              得られた天気情報をもとに
+              <br>
+              風船がどこまで飛んでいくのかを
+              <br>
+              示してくれます
               <br>
               <br>
-              頑張ります！
+              とりあえず
+              ここからポチッと
+              <br>
+              あなたの風船を飛ばしてみましょう
           </div>
-          <div class = "images">
-            <img src = "./images/balloon3.png" class = "images">
+          <div class = "image">
+            <img src = "./images/balloon3.png" class = "image0">
+            <img src = "./images/balloon4.png" class = "image1">
           </div>
       </div>
-    </main>
+    </div>
 
-    <footer>
       <div class = "footer">
-        <button id = "btn1" >
+        <button id="btn1">
           風船を飛ばしてみる
         </button>
         <br>
@@ -76,7 +72,6 @@
           ネットワーク実習A F班
         </div>
       </div>
-    </footer>
 
     <script src = "./js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="./js/top.js"></script>

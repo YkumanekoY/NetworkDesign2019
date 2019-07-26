@@ -139,3 +139,54 @@ button:hover {
   font-size:20px;
   letter-spacing: 0px;
 }
+
+@media screen and (max-width: 479px) { /*ウィンドウ幅が最大479pxまでの場合に適用*/
+div {
+    margin-right: 0px;
+    letter-spacing: 0px;
+    font-size:6px;
+    color: #33546d
+    }
+.col3 div {
+    width: calc(100% / 3);
+    height:480px;
+    background: #f7efed
+    }
+/* .description{
+  display: block;
+  font-size: 10px;
+  transform: scale(0.7);
+  transform-origin: ;
+} */
+button{
+        margin: 20px auto;
+        position: relative;
+        display: inline-block;
+        font-family: 'Kosugi Maru', sans-serif;
+        font-weight: bold;
+        font-size:10px;
+        padding: 20px 70px ;
+        text-decoration: none;
+        color: #FFF;
+        background: #7fa7b8;
+        border-radius: 10px;
+        transition: .4s;
+      }
+.copyright{
+        font-size:10px;
+        letter-spacing: 0px;
+      }
+.image0{
+        width: 100%;
+        text-align: left;
+        margin-top: 220px;
+        position: absolute;
+      }
+.image1{
+        width: 100%;
+        display: none;
+        margin-top: 220px;
+        position: absolute;
+        /*margin-top: 200px auto;*/
+      }
+}

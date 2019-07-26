@@ -73,6 +73,9 @@ header {
     max-width: 70px;
     padding: 10px; 
 }
+#balloon:hover {
+    background: #7fa7b8;
+}
 #balloon a {
     position: absolute;
     z-index: 40;
@@ -80,9 +83,6 @@ header {
     left: 0;
     height: 100%;
     width: 100%;
-}
-#ballon:hover {
-    background: #7fa7b8;
 }
 
 
@@ -94,7 +94,7 @@ header {
     position: relative;
     display: block;
     justify-content: center;
-    z-index: 35;
+    z-index: 29;
     border: 0;
     background: #33536d;
     text-align: center;
@@ -121,7 +121,7 @@ header {
     overflow: auto;
     margin-top: 47px;
     padding: 0px;
-    z-index: 21;
+    z-index: 31;
     width: 200px;
     max-width: 90%;
     position: fixed;
@@ -130,7 +130,6 @@ header {
     height: calc(100% - 47px);
     background: #7fa7b8;
     pointer-events: auto;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
     transform: translateX(-100%);
     transition: transform .3s;
     will-change: transform;
@@ -148,28 +147,27 @@ header {
 }
 
 #nav-content1 li span {
-    padding: 10px 0px;
+    padding: 20px 0px;
     display: inline-flex;
     color: #f7efed;
     font-size: 15px;
+    text-align: center;
     text-transform: uppercase;
     transition: color .1s;
 }
 
 #nav-content1 li img {
+    padding: 10px;
+    max-height: 35px;
     vertical-align: middle;
     position: relative;
 }
 
 
-#nav-container:focus-within #nav-content1 {
-    transform: none;
-}
-
 #drawer-close1 {
     display: none;
     position: fixed;
-    z-index: 19;
+    z-index: 30;
     top: 0;
     left: 0;
     width: 100%;
@@ -194,7 +192,7 @@ header {
     position: relative;
     display: block;
     justify-content: center;
-    z-index: 35;
+    z-index: 29;
     border: 0;
     background: #33536d;
     text-align: center;
@@ -222,7 +220,7 @@ header {
     overflow: auto;
     margin-top: 47px;
     padding: 0px;
-    z-index: 21;
+    z-index: 31;
     width: 200px;
     max-width: 90%;
     position: fixed;
@@ -253,20 +251,16 @@ header {
     display: inline-flex;
     color: #f7efed;
     font-size: 15px;
+    text-align: center;
     text-transform: uppercase;
     transition: color .1s;
 }
 
 
-
-#nav-container:focus-within #nav-content2 {
-    transform: none;
-}
-
 #drawer-close2 {
     display: none;
     position: fixed;
-    z-index: 19;
+    z-index: 30;
     top: 0;
     left: 0;
     width: 100%;

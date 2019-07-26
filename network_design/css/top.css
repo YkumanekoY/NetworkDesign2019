@@ -78,6 +78,9 @@ div{
   position: absolute;
   /*margin-top: 200px auto;*/
 }
+.image2{
+  width: 40%;
+}
 
 .col3 {
   display: flex;

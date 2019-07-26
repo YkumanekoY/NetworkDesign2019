@@ -4,18 +4,27 @@ var lonArray = new Array();
 var lat = 0;
 var lon = 0;
 
+
 //天気情報---------------------------------------------------------------------------
 
 $(document).ready(function() {
-    'use strict'
+    dispLoading("飛行中...")
 
+    setWeather();
+});
+
+function setWeather() {
+    // // 処理前に Loading 画像を表示
+    // dispLoading("処理中...");
+
+    // 非同期処理
+    'use strict'
     const APIKEY = "f9afb324cd9adca6010dcb01b05fe097";
 
     //今日のデータを取り出す
     const date = new Date();
     const nowHour = date.getHours();
 
-    //現在位置の取得ができるかどうか
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(success, error);
 
@@ -29,47 +38,80 @@ $(document).ready(function() {
 
             //緯度経度の表示
             $('.location').text('現在の位置（' + Math.floor(lat0 * 100) / 100 + ',' + Math.floor(lon0 * 100) / 100 + ')');
-            //現在の天気データ呼び出し
-            $.ajax({
-                url: "https://api.openweathermap.org/data/2.5/weather",
-                dataType: "jsonp",
-                data: "q=Tokyo,jp&appid=" + APIKEY,
-                //天気データ呼び出し成功時の挙動
-                success: function(data) {
-                    if (data.weather[0].main === "Sunny" || data.weather[0].main === "Clear") {
-                        $('body').css('background-image', 'url(Sunny.jpg)');
-                        $('.dayWeather').text("晴れ");
-                    } else if (data.weather[0].main === "Rain") {
-                        $('body').css('background-image', 'url(Rain.jpg)');
-                        $('.dayWeather').text("雨");
-                    } else if (data.weather[0].main === "Clouds") {
-                        $('body').css('background-image', 'url(Cloudy.jpg)');
-                        $('.dayWeather').text("くもり");
-                    } else if (data.weather[0].main === "Snow") {
-                        $('body').css('background-image', 'url(Snowy.jpg)');
-                        $('.dayWeather').text("雪");
-                    }
 
-                    //各データの表示
-                    $('.windSpeed').text(data.wind.speed);
-                    $('.windDeg').text(data.wind.deg + "°(" + getAzimuth(data.wind.deg) + ")");
-                    $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);
-                    $('.dayWeatherIcon').attr('src', '../html/assets/images/' + data.weather[0].icon + '.png ');
+            //高度限界まで風船を飛ばすぜ　altは高度
+            var speed = 4.0;
+            latArray.push(lat0);
+            lonArray.push(lon0);
+            lat = lat0;
+            lon = lon0;
+
+            $(function($) {
+                for (let alt = 2.0; alt < 11000; alt += speed * 10) {
+                    var forCount = alt;
+                    (function(alt) {
+                        var v2 = new Array();
+                        $.ajax({
+                            type: 'GET',
+                            url: "https://api.openweathermap.org/data/2.5/weather",
+                            dataType: "jsonp",
+                            data: "lat=" + Math.round(lat * 10000) / 10000 + "&lon=" + Math.round(lon * 10000) / 10000 + "&appid=" + APIKEY,
+                            //天気データ呼び出し成功時の挙動
+                            success: function(data) {
+                                v2 = vincenty(lat, lon, data.wind.deg, data.wind.speed * 10);
+                                lat = v2[0];
+                                lon = v2[1];
+                                console.log(data);
+                                console.log("city: " + data.name + ", lat:" + lat + ", lng:" + lon);
+
+                                if (data.weather[0].main === "Sunny" || data.weather[0].main === "Clear") {
+                                    $('body').css('background-image', 'url(Sunny.jpg)');
+                                    $('.dayWeather').text("晴れ");
+                                } else if (data.weather[0].main === "Rain") {
+                                    $('body').css('background-image', 'url(Rain.jpg)');
+                                    $('.dayWeather').text("雨");
+                                } else if (data.weather[0].main === "Clouds") {
+                                    $('body').css('background-image', 'url(Cloudy.jpg)');
+                                    $('.dayWeather').text("くもり");
+                                } else if (data.weather[0].main === "Snow") {
+                                    $('body').css('background-image', 'url(Snowy.jpg)');
+                                    $('.dayWeather').text("雪");
+                                }
+
+                                //各データの表示
+                                $('.windSpeed').text(data.wind.speed);
+                                $('.windDeg').text(data.wind.deg + "°(" + getAzimuth(data.wind.deg) + ")");
+                                $('.nowTemp').text(Math.floor((data.main.temp - 273.15) * 10) / 10);
+                                $('.dayWeatherIcon').attr('src', '../html/assets/images/' + data.weather[0].icon + '.png ');
+                            },
+                            error: function() {
+                                return;
+                            }
+                        }).done(function() {
+                            latArray.push(lat);
+                            lonArray.push(lon);
+                            console.log(lonArray.length);
+                            if (alt + speed * 10 > 11000) {
+                                removeLoading();
+                                initMap();
+                            }
+                        });
+                    })(forCount);
                 }
             });
+
         }
 
         //現在位置の取得に失敗した場合
         function error(error) {
-            alert("位置情報が取得できなかったため、東京の天気を表示します");
+            alert("位置情報が取得できなかったため、東京から風船を飛ばします。");
             $('.location').text('東京');
 
             TokyoWeather();
-
         }
         //現在位置がそもそも取得できない場合
     } else {
-        alert("位置情報が取得できなかったため、東京の天気を表示します");
+        alert("位置情報が取得できなかったため、東京から風船を飛ばします。");
         $('.location').text('東京');
 
         TokyoWeather();
@@ -105,7 +147,31 @@ $(document).ready(function() {
             }
         });
     }
-});
+}
+
+/* ------------------------------
+ Loading イメージ表示関数
+ 引数： msg 画面に表示する文言
+ ------------------------------ */
+function dispLoading(msg) {
+    // 引数なし（メッセージなし）を許容
+    if (msg == undefined) {
+        msg = "";
+    }
+    // 画面表示メッセージ
+    var dispMsg = "<div class='loadingMsg'>" + msg + "</div>";
+    // ローディング画像が表示されていない場合のみ出力
+    if ($("#loading").length == 0) {
+        $("body").append("<div id='loading'>" + dispMsg + "</div>");
+    }
+}
+
+/* ------------------------------
+ Loading イメージ削除関数
+ ------------------------------ */
+function removeLoading() {
+    $("#loading").remove();
+}
 
 //---------------------------------------------------------------------------
 
@@ -182,3 +248,181 @@ function vincenty(lat1, lng1, alpha12, length) {
 }
 
 //地図関係
+function initMap() {
+    if (navigator.geolocation) {
+        // 現在地を取得
+        var mapLatLng = new google.maps.LatLng(latArray[0], lonArray[0]);
+        var mapArea = document.getElementById('sample');
+        var mapOptions = {
+            disableDefaultUI: true,
+            center: mapLatLng,
+            zoom: 15,
+            styles: [ /*マップの見た目*/ {
+                "featureType": "all",
+                "elementType": "labels.text.fill",
+                "stylers": [{
+                    "color": "#ffffff"
+                }]
+            }, {
+                "featureType": "all",
+                "elementType": "labels.text.stroke",
+                "stylers": [{
+                    "color": "#A28E8B"
+                }]
+            }, {
+                "featureType": "all",
+                "elementType": "labels.icon",
+                "stylers": [{
+                    "visibility": "off"
+                }]
+            }, {
+                "featureType": "administrative",
+                "elementType": "geometry.fill",
+                "stylers": [{
+                    "color": "#F7EFED"
+                }]
+            }, {
+                "featureType": "administrative",
+                "elementType": "geometry.stroke",
+                "stylers": [{
+                    "color": "#F7EFED"
+                }, {
+                    "weight": 1.2
+                }]
+            }, {
+                "featureType": "administrative.locality",
+                "elementType": "geometry.fill",
+                "stylers": [{
+                    "lightness": "-1"
+                }]
+            }, {
+                "featureType": "administrative.neighborhood",
+                "elementType": "labels.text.fill",
+                "stylers": [{
+                    "lightness": "0"
+                }, {
+                    "saturation": "0"
+                }]
+            }, {
+                "featureType": "administrative.neighborhood",
+                "elementType": "labels.text.stroke",
+                "stylers": [{
+                    "weight": "0.01"
+                }]
+            }, {
+                "featureType": "administrative.land_parcel",
+                "elementType": "labels.text.stroke",
+                "stylers": [{
+                    "weight": "0.01"
+                }]
+            }, {
+                "featureType": "landscape",
+                "elementType": "geometry",
+                "stylers": [{
+                    "color": "#F7EFED"
+                }]
+            }, {
+                "featureType": "poi",
+                "elementType": "geometry",
+                "stylers": [{
+                    "color": "#C4B4B3"
+                }]
+            }, {
+                "featureType": "poi.park",
+                "elementType": "labels.icon",
+                "stylers": [{
+                    visibility: "simplified"
+                }, ],
+            }, {
+                "featureType": "poi.park",
+                "elementType": "labels.icon",
+                "stylers": [{
+                    "color": "#C4B4B3"
+                }]
+            }, {
+                "featureType": "road",
+                "elementType": "geometry.stroke",
+                "stylers": [{
+                    "visibility": "off"
+                }]
+            }, {
+                "featureType": "road.highway",
+                "elementType": "geometry.fill",
+                "stylers": [{
+                    "color": "#C4B4B3"
+                }]
+            }, {
+                "featureType": "road.highway.controlled_access",
+                "elementType": "geometry.stroke",
+                "stylers": [{
+                    "color": "#C4B4B3"
+                }]
+            }, {
+                "featureType": "road.arterial",
+                "elementType": "geometry",
+                "stylers": [{
+                    "color": "#C4B4B3"
+                }]
+            }, {
+                "featureType": "road.local",
+                "elementType": "geometry",
+                "stylers": [{
+                    "color": "#C4B4B3"
+                }]
+            }, {
+                "featureType": "transit",
+                "elementType": "geometry",
+                "stylers": [{
+                    "color": "#A28E8B"
+                }]
+            }, {
+                "featureType": "water",
+                "elementType": "geometry",
+                "stylers": [{
+                    "color": "#61D4E2"
+                }]
+            }]
+        };
+
+        var map = new google.maps.Map(mapArea, mapOptions);
+        var input = document.getElementById('pac-input');
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(input);
+
+        map.addListener('bounds_changed', function() {
+            searchBox.setBounds(map.getBounds());
+        });
+
+        var markerOptions = {
+            map: map,
+            position: mapLatLng,
+            icon: new google.maps.MarkerImage(
+                'assets/images/balloon.png',
+            ),
+        };
+
+        var marker = new google.maps.Marker(markerOptions);
+
+        //線の描画
+        var flightPlanCoordinates = [
+            // { lat: 37.772, lng: -122.214 },
+            // {lat: 21.291, lng: -157.821},
+            // {lat: -18.142, lng: 178.431},n.toFixed(1)
+            // {lat: -27.467, lng: 153.027}
+        ];
+        for (let i = 0; i < latArray.length && i < lonArray.length; i++) {
+            var latlon = { lat: latArray[i], lng: lonArray[i] };
+            flightPlanCoordinates.push(latlon)
+        }
+
+        var flightPath = new google.maps.Polyline({
+            path: flightPlanCoordinates,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+
+        flightPath.setMap(map);
+    }
+}

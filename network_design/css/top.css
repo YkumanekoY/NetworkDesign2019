@@ -1,14 +1,20 @@
-@font-face {
-  font-family: 'MyFont1';
-  src: url("../fonts/corp_round_v1.ttf");
+/* header{
+  background: #61d4e2;
+} */
+
+h1{
+  margin: 20px auto;
+  font-size:50px;
+  letter-spacing: 5px;
+  color: #61d4e2
 }
 
 body{
   line-height: 2;
   background: #f7efed;
   text-align: center;
-  margin: 20px auto;
-  font-family:'MyFont1',sans-serif;
+  margin: 0px auto;
+  font-family: 'Kosugi Maru', sans-serif;
   transition: all 1s;
 }
 
@@ -28,24 +34,16 @@ body {
 }
 
 
-/*body::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color:#f7efed;  /* 背景カラー
-  z-index: 9999;  /* 一番手前に
-  pointer-events: none;  /* 他の要素にアクセス可能にするためにポインターイベントは無効に
-  opacity: 0;  /* 初期値 : 透過状態
-  -webkit-transition: opacity .8s ease;  /* アニメーション時間は 0.8秒
+body::after {
+  pointer-events: none;
+  opacity: 0;
+  -webkit-transition: opacity .8s ease;
   transition: opacity .8s ease;
-}*/
+}
 
-/*body.fadeout::after {
+body.fadeout::after {
   opacity: 1;
-} */
+}
 
 /*.bodyfadeout {
     opacity: 0;
@@ -56,28 +54,32 @@ body {
     opacity: 1;
 }*/
 
-h1{
-  margin: 20px auto;
-  font-size:50px;
-  color: #61d4e2
-}
-
 div{
   margin-right: 0px;
-  letter-spacing: 5px;
+  letter-spacing: 0px;
   font-size:20px;
   color: #33546d
 }
 
-main{
-  margin-top: 20px auto;
+.image{
+  width: 100%;
+  text-align: left;
+  /*margin-top: 200px auto;*/
+  position: relative;
 }
-
-.images{
-  width: 90%;
-  text-align: right;
-  margin: 0px auto;
-  margin-top: 200px auto;
+.image0{
+  width: 100%;
+  position: absolute;
+  /*margin-top: 200px auto;*/
+}
+.image1{
+  width: 100%;
+  display: none;
+  position: absolute;
+  /*margin-top: 200px auto;*/
+}
+.image2{
+  width: 40%;
 }
 
 .col3 {
@@ -86,13 +88,20 @@ main{
 
 .col3 div {
   width: calc(100% / 3);
+  height: 700px;
+  background: #f7efed
+
 }
+
+/*.description{
+  margin-top: 30px;
+}*/
 
 button{
   margin: 20px auto;
   position: relative;
   display: inline-block;
-  font-family:'MyFont1',sans-serif;
+  font-family: 'Kosugi Maru', sans-serif;
   font-weight: bold;
   font-size:20px;
   padding: 20px 100px ;
@@ -107,7 +116,7 @@ button:hover {
   background: #f1485b;
 }
 
-onclick{
+/*onclick{
     animation: fadeIn 2s ease 0s 1 normal;
     -webkit-animation: fadeIn 2s ease 0s 1 normal;
 }
@@ -120,13 +129,64 @@ onclick{
 @-webkit-keyframes fade0ut {
     100% {opacity: 1}
     0% {opacity: 0}
-}
+}*/
 
-.footer{
+/*.footer{
   color: #33546d;
-}
+}*/
 
 .copyright{
   font-size:20px;
   letter-spacing: 0px;
+}
+
+@media screen and (max-width: 479px) { /*ウィンドウ幅が最大479pxまでの場合に適用*/
+div {
+    margin-right: 0px;
+    letter-spacing: 0px;
+    font-size:6px;
+    color: #33546d
+    }
+.col3 div {
+    width: calc(100% / 3);
+    height:480px;
+    background: #f7efed
+    }
+/* .description{
+  display: block;
+  font-size: 10px;
+  transform: scale(0.7);
+  transform-origin: ;
+} */
+button{
+        margin: 20px auto;
+        position: relative;
+        display: inline-block;
+        font-family: 'Kosugi Maru', sans-serif;
+        font-weight: bold;
+        font-size:10px;
+        padding: 20px 70px ;
+        text-decoration: none;
+        color: #FFF;
+        background: #7fa7b8;
+        border-radius: 10px;
+        transition: .4s;
+      }
+.copyright{
+        font-size:10px;
+        letter-spacing: 0px;
+      }
+.image0{
+        width: 100%;
+        text-align: left;
+        margin-top: 220px;
+        position: absolute;
+      }
+.image1{
+        width: 100%;
+        display: none;
+        margin-top: 220px;
+        position: absolute;
+        /*margin-top: 200px auto;*/
+      }
 }
